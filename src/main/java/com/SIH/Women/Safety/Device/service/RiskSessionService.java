@@ -1,16 +1,18 @@
 package com.SIH.Women.Safety.Device.service;
 
-import com.SIH.Women.Safety.Device.model.Incident;
-import com.SIH.Women.Safety.Device.model.RiskSession;
-import com.SIH.Women.Safety.Device.Repository.IncidentRepository;
-import com.SIH.Women.Safety.Device.Repository.RiskSessionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.SIH.Women.Safety.Device.Repository.IncidentRepository;
+import com.SIH.Women.Safety.Device.Repository.RiskSessionRepository;
+import com.SIH.Women.Safety.Device.model.Incident;
+import com.SIH.Women.Safety.Device.model.RiskEvaluationRequest;
+import com.SIH.Women.Safety.Device.model.RiskSession; // ==> NAYA IMPORT YAHAN HAI
 
 @Service
 public class RiskSessionService {
@@ -34,6 +36,48 @@ public class RiskSessionService {
 
     private static final double DECAY_PER_MINUTE = 10.0;
 
+    // ==========================================
+    // 1. NAYA METHOD: Mega Request (All triggers) handle karne ke liye
+    // ==========================================
+    public RiskSession processComprehensiveRisk(String userId, RiskEvaluationRequest request) {
+        RiskSession session = getCurrentSession(userId);
+        applyDecay(session);
+
+        double score = session.getCurrentScore();
+        
+        // Hardware & Physical Triggers Check
+        if (request.isFallDetected()) score += WEIGHTS.getOrDefault("fall", 40.0);
+        if (request.isShakeDetected()) score += WEIGHTS.getOrDefault("shake", 20.0);
+        if (request.isNoMovementAfterFall()) score += WEIGHTS.getOrDefault("noMovementAfterFall", 30.0);
+        if (request.getHeartRate() != null && request.getHeartRate() > 120) score += WEIGHTS.getOrDefault("heartRateSpike", 30.0);
+        
+        // Environmental & Location Triggers
+        if (request.isHighRiskZone()) score += 20.0;
+        if (request.isErraticMovementDetected()) score += 15.0;
+
+        // Direct SOS Triggers (Immediate 100 Score)
+        if (request.isManualSosTriggered() || request.isVoiceSosTriggered() || request.isHiddenSosTriggered() || request.isSilentSosTriggered() || request.isButtonClicked()) {
+            score = 100.0;
+        }
+
+        session.setCurrentScore(Math.min(100, score)); // Score 100 se upar na jaye
+        session.setLastUpdated(LocalDateTime.now());
+
+        String previousZone = session.getZone();
+        String newZone = calculateZone(session.getCurrentScore());
+        session.setZone(newZone);
+
+        // Agar Zone change hota hai (jaise Green se Red), toh actions lo
+        if (!newZone.equals(previousZone)) {
+            handleZoneTransition(session, newZone, request.getLatitude(), request.getLongitude());
+        }
+
+        return riskSessionRepository.save(session);
+    }
+
+    // ==========================================
+    // 2. PURANA METHOD: Single events ke liye
+    // ==========================================
     public RiskSession processEvent(String userId, String eventType, Double lat, Double lng) {
         RiskSession session = riskSessionRepository.findByUserId(userId)
                 .orElseGet(() -> createNewSession(userId));
@@ -55,7 +99,6 @@ public class RiskSessionService {
         String newZone = calculateZone(session.getCurrentScore());
         session.setZone(newZone);
 
-        // Handle zone transitions
         if (!newZone.equals(previousZone)) {
             handleZoneTransition(session, newZone, lat, lng);
         }
@@ -96,8 +139,8 @@ public class RiskSessionService {
                 Incident incident = new Incident();
                 incident.setUserId(session.getUserId());
                 incident.setType("auto_sos");
-                incident.setLat(lat);
-                incident.setLng(lng);
+                incident.setLatitude(lat); 
+                incident.setLongitude(lng); 
                 incident.setStatus("ACTIVE");
                 incident.setTimestamp(LocalDateTime.now());
                 Incident saved = incidentRepository.save(incident);

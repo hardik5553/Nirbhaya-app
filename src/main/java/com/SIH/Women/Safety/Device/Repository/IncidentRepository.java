@@ -1,7 +1,16 @@
 package com.SIH.Women.Safety.Device.Repository;
 
-import com.SIH.Women.Safety.Device.model.Incident;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import java.util.List;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+import com.SIH.Women.Safety.Device.model.Incident;
+
+@Repository
 public interface IncidentRepository extends MongoRepository<Incident, String> {
+    
+    List<Incident> findByUserId(String userId);
+    
+    List<Incident> findByUserIdOrderByTimestampDesc(String userId);
 }
