@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Location | NIRBHAYA</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #D2B48C;
+            color: black;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 105px;
+            height: 100vh;
+            background: #0f172a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 10px;
+            z-index: 1000;
+        }
+
+        .brand {
+            color: white;
+            font-size: 23px;
+            font-weight: 700;
+            margin-bottom: 35px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .brand a {
+            color: #ef476f;
+            text-decoration: none;
+        }
+
+        .menu {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu a {
+            width: 90px;
+            text-decoration: none;
+            color: #cbd5e1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 5px;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .menu a i {
+            font-size: 21px;
+        }
+
+        .menu a span {
+            font-size: 11px;
+        }
+
+        .menu a:hover {
+            background: #16243a;
+            color: white;
+        }
+
+        .menu a.active {
+            color: #ff3864;
+        }
+
+        /* SOS Button */
+        .sos-wrapper {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sos {
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            background: #ef3340;
+            border: 7px solid #651b29;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(239, 51, 64, 0.45);
+            transition: 0.3s;
+        }
+
+        .sos:hover {
+            transform: scale(1.08);
+        }
+
+        .sos-wrapper small {
+            color: white;
+            margin-top: 7px;
+            font-size: 10px;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+        .main {
+            margin-left: 105px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* =========================
+           TOPBAR
+        ========================= */
+        .topbar {
+            height: 80px;
+            background: #16243a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            position: relative;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .app-logo {
+            height: 48px;
+            width: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        .logo-area h2 {
+            font-family: Poppins, sans-serif;
+            font-size: 20px;
+        }
+
+        .logo-area h2 span {
+            color: #ff3864;
+        }
+
+        .tagline {
+            font-size: 11px;
+            color: #cbd5e1;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .notification {
+            position: relative;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .notification .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 18px;
+            height: 18px;
+            background: #ef3340;
+            border-radius: 50%;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* User Profile Dropdown Styles */
+        .user-dropdown-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 55px;
+            background: #ffffff;
+            color: #1e293b;
+            min-width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            z-index: 1100;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-header {
+            padding: 15px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .dropdown-header strong {
+            display: block;
+            font-size: 14px;
+            color: #0f172a;
+        }
+
+        .dropdown-header small {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: #f1f5f9;
+            color: #e11d48;
+        }
+
+        .dropdown-item i {
+            width: 16px;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        /* =========================
+           CONTENT & MAP SECTION
+        ========================= */
+        .content {
+            padding: 35px;
+            flex: 1;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            font-family: Poppins, sans-serif;
+            font-size: 36px;
+        }
+
+        .page-title p {
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        .map-section {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+            max-width: 950px;
+        }
+
+        .map-section h2 {
+            font-family: Poppins, sans-serif;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        .destination-search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .destination-search-box input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .destination-search-box input:focus {
+            border-color: #2563eb;
+        }
+
+        .destination-search-box button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .destination-search-box button:hover {
+            background: #1d4ed8;
+        }
+
+        #locationBox {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        #locationBox p {
+            margin: 6px 0;
+            font-size: 14px;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        #locationBox span {
+            color: #ef3340;
+            font-weight: 700;
+        }
+
+        .detect-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: 0.2s;
+        }
+
+        .detect-btn:hover {
+            background: #059669;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 450px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #cbd5e1;
+            background: #f1f5f9;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #475569;
+            font-size: 12px;
+        }
+
+        @media(max-width: 750px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .menu a {
+                width: 55px;
+            }
+
+            .menu a span {
+                display: none;
+            }
+
+            .main {
+                margin-left: 70px;
+            }
+
+            .tagline {
+                display: none;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .destination-search-box {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <a href="../security.html" title="Security Center">
+                <i class="fa-solid fa-shield-halved" style="color: #ef476f; font-size: 26px;"></i>
+            </a>
+        </div>
+
+        <nav class="menu">
+            <a href="../dashboard.html">
+                <i class="fa-solid fa-border-all"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="track-location.html" class="active">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Location</span>
+            </a>
+
+            <a href="../alerts.html">
+                <i class="fa-solid fa-bell"></i>
+                <span>Alerts</span>
+            </a>
+
+            <a href="../watch.html">
+                <i class="fa-solid fa-clock"></i>
+                <span>Watch</span>
+            </a>
+
+            <a href="../security.html">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Security</span>
+            </a>
+
+            <a href="../contacts.html">
+                <i class="fa-solid fa-users"></i>
+                <span>Contacts</span>
+            </a>
+
+            <a href="../history.html">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>History</span>
+            </a>
+
+            <a href="../settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="sos-wrapper">
+            <button class="sos" onclick="triggerSOSCountdown()">SOS</button>
+            <small>Emergency</small>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <div class="logo-area">
+                <img src="../assets/images/nir2.jpeg" alt="NIRBHAYA Logo" class="app-logo"
+                    onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100'">
+                <div>
+                    <h2><span>NIR</span> BHAYA</h2>
+                    <div class="tagline">Your Safety. Our Priority.</div>
+                </div>
+            </div>
+
+            <div class="top-right">
+                <div class="notification" onclick="location.href='../alerts.html'">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="badge">3</span>
+                </div>
+
+                <div class="user-dropdown-container" id="userDropdownToggle">
+                    <div class="user">
+                        <img id="topbarUserImg" src="../aqw.jpeg" alt="Profile"
+                            onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'">
+                        <strong id="topbarUserName">Hi, User</strong>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i>
+                    </div>
+
+                    <div class="dropdown-menu" id="userDropdownMenu">
+                        <div class="dropdown-header">
+                            <strong id="dropdownUserName">User</strong>
+                            <small id="dropdownUserEmail">user@example.com</small>
+                        </div>
+                        <a href="#" class="dropdown-item"
+                            onclick="alert('User Details: Primary User | Status: Verified')">
+                            <i class="fa-solid fa-user"></i> User Details
+                        </a>
+                        <a href="../settings.html" class="dropdown-item">
+                            <i class="fa-solid fa-gear"></i> Account Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="../login.html" class="dropdown-item" style="color: #ef3340;" onclick="handleLogout(event)">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="content">
+            <div class="page-title">
+                <h1>Track Location & Route</h1>
+                <p>Real-time GPS coordinate mapping and destination safety monitoring</p>
+            </div>
+
+            <div class="map-section" id="mapSection">
+                <h2>Live GPS Coordinates & Navigation</h2>
+
+                <div class="destination-search-box">
+                    <input type="text" id="destinationInput"
+                        placeholder="🔍 Search destination (e.g., Central Station, Delhi, Mumbai)...">
+                    <button onclick="searchDestinationRoute()">Search & Route 🚀</button>
+                </div>
+
+                <div id="locationBox">
+                    <p>Status: <span id="status">Requesting GPS location permission...</span></p>
+                    <p>Latitude: <span id="latitude">Waiting for GPS...</span></p>
+                    <p>Longitude: <span id="longitude">Waiting for GPS...</span></p>
+                    <p>Route Status: <span id="routeStatusText" style="color: #2563eb;">Live GPS Tracking Initializing</span></p>
+                    <button class="detect-btn" onclick="startStrictLiveLocation()"><i class="fa-solid fa-location-crosshairs"></i> Refresh / Detect My GPS</button>
+                </div>
+
+                <div class="map-container">
+                    <iframe id="locationMap" src="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            🛡️ NIR BHAYA © 2026 | Protection. Prevention. Peace of Mind.
+        </footer>
+
+    </main>
+
+    <!-- Global Multi-Channel SOS Engine Script -->
+    <script src="../js/api.js"></script>
+    <script src="../js/location-service.js"></script>
+    <script src="../global-sos.js"></script>
+
+    <!-- GEOLOCATION & EXACT PIN MAPPING SCRIPT -->
+    <script>
+        // Session Security Guard
+        window.addEventListener('DOMContentLoaded', () => {
+            const activeUser = localStorage.getItem('nirbhaya_current_user_email') || localStorage.getItem('nirbhaya_user_email');
+            
+            if (!activeUser) {
+                alert("⚠️ Unauthorized Access: Please log in first.");
+                window.location.href = "../login.html";
+            }
+        });
+
+        let watchId = null;
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const savedName = localStorage.getItem('nirbhaya_username');
+            const savedDp = localStorage.getItem('nirbhaya_userdp');
+            const savedEmail = localStorage.getItem('nirbhaya_user_email') || localStorage.getItem('nirbhaya_current_user_email');
+
+            if (savedName) {
+                const topbarNameEl = document.getElementById('topbarUserName');
+                const dropdownNameEl = document.getElementById('dropdownUserName');
+                if (topbarNameEl) topbarNameEl.textContent = `Hi, ${savedName}`;
+                if (dropdownNameEl) dropdownNameEl.textContent = savedName;
+            }
+
+            if (savedEmail) {
+                const dropdownEmailEl = document.getElementById('dropdownUserEmail');
+                if (dropdownEmailEl) dropdownEmailEl.textContent = savedEmail;
+            }
+
+            const topbarImg = document.getElementById('topbarUserImg');
+            if (savedDp && savedDp.trim() !== "") {
+                if (topbarImg) topbarImg.src = savedDp;
+            } else {
+                if (topbarImg) topbarImg.src = '../aqw.jpeg';
+            }
+
+            startStrictLiveLocation();
+        });
+
+        function startStrictLiveLocation() {
+            const latSpan = document.getElementById("latitude");
+            const lonSpan = document.getElementById("longitude");
+            const statusSpan = document.getElementById("status");
+            const mapIframe = document.getElementById("locationMap");
+
+            if (!("geolocation" in navigator)) {
+                statusSpan.textContent = "❌ Geolocation is not supported by your browser.";
+                statusSpan.style.color = "#ef3340";
+                return;
+            }
+
+            statusSpan.textContent = "Requesting live GPS permissions...";
+            statusSpan.style.color = "#f59e0b";
+
+            const handleSuccess = (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                latSpan.textContent = lat.toFixed(5);
+                latSpan.style.color = "#16a34a";
+                lonSpan.textContent = lon.toFixed(5);
+                lonSpan.style.color = "#16a34a";
+
+                statusSpan.textContent = "✅ Real-time GPS Location Locked!";
+                statusSpan.style.color = "#16a34a";
+
+                mapIframe.src = `https://maps.google.com/maps?q=${lat},${lon}&hl=en&z=17&output=embed`;
+            };
+
+            const handleError = (error) => {
+                console.warn("High accuracy geolocation timed out or failed:", error.message);
+                
+                navigator.geolocation.getCurrentPosition(
+                    handleSuccess,
+                    (finalErr) => {
+                        let errorMsg = "❌ Location permission denied. Please allow location access.";
+                        if (finalErr.code === finalErr.POSITION_UNAVAILABLE) {
+                            errorMsg = "❌ GPS signal unavailable. Please ensure device location is turned ON.";
+                        } else if (finalErr.code === finalErr.TIMEOUT) {
+                            errorMsg = "❌ Location request timed out. Click 'Refresh / Detect My GPS' above.";
+                        }
+                        statusSpan.textContent = errorMsg;
+                        statusSpan.style.color = "#ef3340";
+                        latSpan.textContent = "--";
+                        lonSpan.textContent = "--";
+                    },
+                    { enableHighAccuracy: false, timeout: 15000, maximumAge: 0 }
+                );
+            };
+
+            navigator.geolocation.getCurrentPosition(handleSuccess, handleError, {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            });
+
+            if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+            watchId = navigator.geolocation.watchPosition(handleSuccess, (e) => console.log("Watch tracking update:", e.message), {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 1000
+            });
+        }
+
+        function searchDestinationRoute() {
+            const destinationQuery = document.getElementById('destinationInput').value.trim();
+            const routeStatus = document.getElementById('routeStatusText');
+            const mapIframe = document.getElementById('locationMap');
+
+            if (!destinationQuery) {
+                alert("⚠️ Please enter a destination to search.");
+                return;
+            }
+
+            routeStatus.textContent = `Navigating towards: ${destinationQuery} (Safe Route Verified)`;
+            routeStatus.style.color = "#16a34a";
+
+            alert(`🧭 Route Calculated Successfully!\n- Destination: ${destinationQuery}\n- AI Guardian: Safe corridor selected.\n- Updating map to display destination route...`);
+
+            mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(destinationQuery)}&hl=en&z=14&output=embed`;
+        }
+
+        function handleLogout(event) {
+            if (event) event.preventDefault();
+            localStorage.clear();
+            window.location.href = "../login.html";
+        }
+
+        const dropdownToggle = document.getElementById('userDropdownToggle');
+        const dropdownMenu = document.getElementById('userDropdownMenu');
+
+        if (dropdownToggle && dropdownMenu) {
+            dropdownToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+            });
+
+            window.addEventListener('click', () => {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>

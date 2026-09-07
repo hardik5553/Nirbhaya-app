@@ -1,0 +1,310 @@
+/* =========================
+   GLOBAL RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   BODY
+========================= */
+
+body {
+    background-color: #F3E8DA;
+    font-family: Arial, sans-serif;
+    color: #3F332B;
+}
+
+
+/* =========================
+   MAIN AUTH PAGE
+========================= */
+
+.auth-page {
+    min-height: 100vh;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px 20px;
+}
+
+
+/* =========================
+   LOGIN CONTAINER
+========================= */
+
+.login-container {
+    width: 50%;
+    max-width: 500px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+
+/* Logo container */
+
+.shield-logo {
+    width: 100px;
+    height: 100px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Logo image */
+
+.shield {
+    width: 100px;
+    height: 100px;
+
+    object-fit: contain;
+}
+
+
+/* App name */
+
+.auth-header h1 {
+    color: #3F332B;
+
+    font-size: 34px;
+
+    letter-spacing: 4px;
+}
+
+
+/* Tagline */
+
+.auth-header p {
+    margin-top: 10px;
+
+    text-align: center;
+
+    color: #806F61;
+
+    font-weight: 400;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   LOGIN CARD
+========================= */
+
+.login-card {
+    width: 100%;
+
+    background-color: #FCF9F5;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    box-shadow: 0 10px 30px rgba(80, 60, 40, 0.12);
+}
+
+
+/* Welcome heading */
+
+.login-card h2 {
+    text-align: center;
+
+    color: #3F332B;
+
+    font-size: 27px;
+
+    margin-bottom: 8px;
+}
+
+
+/* Subtitle */
+
+.login-card p {
+    text-align: center;
+
+    margin-top: 10px;
+
+    color: #806F61;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   INPUT GROUP
+========================= */
+
+.input-group {
+    width: 100%;
+
+    margin-top: 20px;
+}
+
+
+/* Label */
+
+.input-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #3F332B;
+}
+
+
+/* =========================
+   INPUT WRAPPER
+========================= */
+
+.input-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+
+/* Input */
+
+.input-wrapper input {
+    width: 100%;
+
+    height: 52px;
+
+    padding: 0 45px;
+
+    border: 1px solid #D8C8B8;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    background-color: #FFFDFC;
+
+    color: #3F332B;
+
+    font-size: 15px;
+}
+
+
+/* Placeholder */
+
+.input-wrapper input::placeholder {
+    color: #9A897A;
+}
+
+
+/* Input focus */
+
+.input-wrapper input:focus {
+    border-color: #806F61;
+
+    box-shadow:
+        0 0 0 3px rgba(128, 111, 97, 0.15);
+}
+
+
+/* =========================
+   INPUT ICON
+========================= */
+
+.input-icon {
+    position: absolute;
+
+    left: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #806F61;
+
+    font-size: 20px;
+
+    z-index: 1;
+}
+
+
+/* =========================
+   EYE BUTTON
+========================= */
+
+.eye-btn {
+    position: absolute;
+
+    right: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: none;
+
+    background: transparent;
+
+    color: #806F61;
+
+    cursor: pointer;
+
+    font-size: 18px;
+}
+
+
+/* Eye hover */
+
+.eye-btn:hover {
+    color: #594638;
+}
+
+
+/* =========================
+   FORGOT PASSWORD
+========================= */
+
+.login-options {
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 8px;
+
+    margin-bottom: 20px;
+}
+
+
+.login-options a {
+    text-decoration: none;
+
+    color: #6F5A48;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.login-options a:hover {
+    color: #594638;
+
+    text-decoration: underline;
+}

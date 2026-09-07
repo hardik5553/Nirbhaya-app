@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NIRBHAYA - Sign Up</title>
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .signup-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            background-image: url("bgg.jpeg");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Top Shield Branding Header matching Login Page */
+        .auth-brand-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .auth-brand-header i {
+            font-size: 2.8rem;
+            color: #000000;
+            /* Completely black shield icon */
+            margin-bottom: 8px;
+        }
+
+        .auth-brand-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #111827;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .auth-brand-header p {
+            font-size: 0.85rem;
+            color: #4b5563;
+            margin-top: 4px;
+        }
+
+        .signup-box {
+            width: 100%;
+            max-width: 450px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .signup-box h2 {
+            text-align: center;
+            color: #111827;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .signup-box .subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .input-field-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-field-wrapper i.field-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 0.95rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            height: 48px;
+            padding: 12px 40px 12px 42px;
+            font-size: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            box-sizing: border-box;
+            background: #fff;
+            transition: 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: #e63946;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+        }
+
+        .password-container i.toggle-pwd {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+
+        .terms {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            margin: 15px 0;
+            color: #334155;
+        }
+
+        .captcha-box {
+            width: 100%;
+            min-height: 65px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            box-sizing: border-box;
+            margin: 15px 0;
+            color: #222;
+        }
+
+        .captcha-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .captcha-left input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .captcha-left label {
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .captcha-logo {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #555;
+        }
+
+        .robot-icon {
+            font-size: 22px;
+        }
+
+        .captcha-logo small {
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        .captcha-logo span {
+            font-size: 6px;
+            margin-top: 1px;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            background: #e63946;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
+        }
+
+        .signup-btn:hover {
+            background: #c92f3d;
+        }
+
+        .login-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .login-text a {
+            color: #e63946;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Terms & Conditions Modal Styling */
+        .terms-link {
+            color: #2563eb;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            color: #1e293b;
+            width: 100%;
+            max-width: 550px;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            color: #0f172a;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .modal-body p {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .modal-body ul {
+            margin-left: 20px;
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 15px;
+        }
+
+        .modal-body li {
+            margin-bottom: 6px;
+        }
+
+        .modal-footer {
+            text-align: right;
+            margin-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+        }
+
+        .modal-btn {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="signup-container">
+
+        <!-- Top Shield Branding Header matching Login Page -->
+        <div class="auth-brand-header">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h2>NIRBHAYA</h2>
+            <p>Security on your wrist, peace in your mind</p>
+        </div>
+
+        <div class="signup-box">
+
+            <h2>Create Account</h2>
+            <p class="subtitle">Join to continue your safest journey</p>
+
+            <form id="signupForm" onsubmit="handleSignup(event)">
+
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <div class="input-field-wrapper">
+                        <i class="fa-solid fa-user field-icon"></i>
+                        <input type="text" id="name" placeholder="Enter your full name" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-field-wrapper">
+                        <i class="fa-solid fa-envelope field-icon"></i>
+                        <input type="email" id="email" placeholder="name@example.com" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="phone">Phone Number</label>
+                    <div class="input-field-wrapper">
+                        <i class="fa-solid fa-phone field-icon"></i>
+                        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="accountRole">Account Type</label>
+                    <div class="input-field-wrapper">
+                        <i class="fa-solid fa-user-shield field-icon"></i>
+                        <select id="accountRole" style="width: 100%; height: 48px; padding: 12px 40px 12px 42px; font-size: 14px; border: 1px solid #cbd5e1; border-radius: 10px; background: #fff;" onchange="toggleAdminKeyField()">
+                            <option value="USER">Safety User</option>
+                            <option value="ADMIN">Administrator</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group" id="adminKeyGroup" style="display: none;">
+                    <label for="adminRegistrationKey">Administrator Secret Key</label>
+                    <div class="input-field-wrapper">
+                        <i class="fa-solid fa-key field-icon"></i>
+                        <input type="password" id="adminRegistrationKey" placeholder="Enter administrator secret key" autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- Password Field with Toggle Icon -->
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="input-field-wrapper password-container">
+                        <i class="fa-solid fa-lock field-icon"></i>
+                        <input type="password" id="password" placeholder="Create a password (min 6 chars)" required>
+                        <i class="fa-regular fa-eye toggle-pwd"
+                            onclick="togglePasswordVisibility('password', this)"></i>
+                    </div>
+                </div>
+
+                <!-- Confirm Password Field with Toggle Icon -->
+                <div class="input-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-field-wrapper password-container">
+                        <i class="fa-solid fa-lock field-icon"></i>
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                        <i class="fa-regular fa-eye toggle-pwd"
+                            onclick="togglePasswordVisibility('confirmPassword', this)"></i>
+                    </div>
+                </div>
+
+                <!-- Terms -->
+                <div class="terms">
+                    <input type="checkbox" id="terms" required>
+
+                    <label for="terms">
+                        I agree to the <span class="terms-link" onclick="openTermsModal(event)">Terms & Conditions &
+                            Permissions</span>
+                    </label>
+                </div>
+
+                <!-- CAPTCHA -->
+                <div class="captcha-box">
+
+                    <div class="captcha-left">
+
+                        <input type="checkbox" id="robotCheck" required>
+
+                        <label for="robotCheck">
+                            I'm not a robot
+                        </label>
+
+                    </div>
+
+                    <div class="captcha-logo">
+
+                        <div class="robot-icon">🤖</div>
+
+                        <small>CAPTCHA</small>
+
+                        <span>
+                            Privacy - Terms
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- Button -->
+                <button type="submit" class="signup-btn">
+                    Create Account
+                </button>
+
+                <!-- Login -->
+                <p class="login-text">
+                    Already have an account?
+                    <a href="login.html">Login</a>
+                </p>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Terms & Conditions Modal Pop-up -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>NIRBHAYA - Terms, Permissions & Privacy</h2>
+                <button class="modal-close" onclick="closeTermsModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Welcome to <strong>NIRBHAYA</strong>. By creating an account and checking our terms, you authorize
+                    the following safety permissions and protocols designed to ensure your absolute protection:</p>
+                <ul>
+                    <li><strong>Live Geolocation Tracking:</strong> Allows the application and paired IoT smart
+                        wristband to track and map your real-time GPS coordinates for emergency dispatch.</li>
+                    <li><strong>Microphone Access (Voice SOS):</strong> Permits background audio keyword monitoring to
+                        detect hands-free emergency distress cues (e.g., "Help", "Bachao").</li>
+                    <li><strong>Emergency Network Dispatch:</strong> Grants permission to automatically transmit your
+                        live location, heart rate telemetry, and automated audio evidence chunks to your registered
+                        trusted contacts and local authorities upon SOS activation.</li>
+                    <li><strong>Data Privacy & Security:</strong> All telemetry and personal logs are encrypted using
+                        secure TLS protocols and stored securely in compliance with safety standards.</li>
+                </ul>
+                <p>Your safety is our priority. You can modify these permissions at any time through your account
+                    settings.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closeTermsModal()">I Understand & Accept</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script for strict signup and backend integration flow -->
+    <script>
+
+        const API_BASE_URL = window.NIRBHAYA_API_BASE_URL || 'http://localhost:8082/api';
+
+        const hideTimers = {};
+
+        function toggleAdminKeyField() {
+            const isAdmin = document.getElementById('accountRole').value === 'ADMIN';
+            document.getElementById('adminKeyGroup').style.display = isAdmin ? 'block' : 'none';
+            document.getElementById('adminRegistrationKey').required = isAdmin;
+        }
+
+        function togglePasswordVisibility(fieldId, iconElement) {
+            const passwordInput = document.getElementById(fieldId);
+
+            if (hideTimers[fieldId]) {
+                clearTimeout(hideTimers[fieldId]);
+            }
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                iconElement.classList.remove("fa-eye");
+                iconElement.classList.add("fa-eye-slash");
+
+                hideTimers[fieldId] = setTimeout(() => {
+                    passwordInput.type = "password";
+                    iconElement.classList.remove("fa-eye-slash");
+                    iconElement.classList.add("fa-eye");
+                }, 5000);
+
+            } else {
+                passwordInput.type = "password";
+                iconElement.classList.remove("fa-eye-slash");
+                iconElement.classList.add("fa-eye");
+            }
+        }
+
+        // Signup handling logic with backend database integration
+        async function handleSignup(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const emailInput = document.getElementById('email');
+            const email = emailInput.value.trim().toLowerCase();
+            const phone = document.getElementById('phone').value.trim();
+            const role = document.getElementById('accountRole').value;
+            const adminRegistrationKey = document.getElementById('adminRegistrationKey').value;
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+            const robotCheck = document.getElementById('robotCheck').checked;
+
+            // 1. Strict Email Format Check (Must contain '@' and '.')
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("❌ Invalid Email Format! Please enter a valid email address containing '@' (e.g., user@example.com).");
+                emailInput.focus();
+                return;
+            }
+
+            // 2. Password Length Check
+            if (password.length < 6) {
+                alert("⚠️ Password must be at least 6 characters long.");
+                return;
+            }
+
+            // 3. Password Match Check
+            if (password !== confirmPassword) {
+                alert("❌ Passwords do not match! Please re-check.");
+                return;
+            }
+
+            // 4. Captcha Robot Check Verification
+            if (!robotCheck) {
+                alert("⚠️ Please verify that you are not a robot by checking the CAPTCHA box.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: name, email, phoneNumber: phone, password, role, adminRegistrationKey })
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    alert(`❌ ${result.message || 'Failed to create account.'}`);
+                    return;
+                }
+
+                alert(`✅ Account Created Successfully for ${name}!\n\nPlease log in using your credentials.`);
+                window.location.href = "login.html"; // Redirects to login page after signup
+
+            } catch (err) {
+                console.error('Unexpected error during signup:', err);
+                alert("❌ An unexpected error occurred. Please try again.");
+            }
+        }
+
+        function openTermsModal(event) {
+            event.preventDefault();
+            document.getElementById('termsModal').style.display = 'flex';
+        }
+
+        function closeTermsModal() {
+            document.getElementById('termsModal').style.display = 'none';
+        }
+
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('termsModal');
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+
+</html>
