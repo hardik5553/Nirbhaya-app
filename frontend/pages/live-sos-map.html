@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live SOS Monitoring Map | NIRBHAYA Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #efe8dc; color: #1e293b; min-height: 100vh; display: flex; }
+
+        .sidebar { width: 80px; height: 100vh; background: #0d131f; display: flex; flex-direction: column; align-items: center; padding: 20px 0; position: fixed; z-index: 1000; }
+        .sidebar .logo-area { color: #fff; font-weight: 800; font-size: 14px; margin-bottom: 30px; text-align: center; }
+        .sidebar a { color: #94a3b8; text-decoration: none; display: flex; flex-direction: column; align-items: center; font-size: 10px; padding: 12px 0; width: 100%; transition: 0.2s; }
+        .sidebar a i { font-size: 18px; margin-bottom: 4px; }
+        .sidebar a:hover, .sidebar a.active { color: #ffffff; background: rgba(255, 255, 255, 0.08); border-left: 4px solid #e11d48; }
+
+        .main-content { margin-left: 80px; flex: 1; padding: 40px; }
+        .header-title { margin-bottom: 25px; }
+        .header-title h1 { font-family: 'Poppins', sans-serif; font-size: 28px; color: #0f172a; display: flex; align-items: center; gap: 12px; }
+        .header-title h1 i { color: #e11d48; animation: pulseIcon 1.5s infinite; }
+        .header-title p { color: #64748b; font-size: 14px; margin-top: 5px; }
+
+        @keyframes pulseIcon { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        .sos-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
+        @media(max-width: 900px) { .sos-grid { grid-template-columns: 1fr; } }
+
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06); border: 1px solid rgba(226, 232, 240, 0.8); }
+        .live-radar-box { width: 100%; height: 450px; background: #0d131f; border-radius: 14px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; color: #94a3b8; }
+
+        .broadcast-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f1f5f9; }
+        .broadcast-item:last-child { border-bottom: none; }
+        .sos-tag { background: #fee2e2; color: #dc2626; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-area">
+            <i class="fa-solid fa-user-shield" style="font-size: 22px; color: #e11d48;" title="Admin Portal"></i>
+        </div>
+        <nav style="width: 100%; display: flex; flex-direction: column; gap: 4px;">
+            <a href="../admin.html">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Admin</span>
+            </a>
+            <a href="danger-zones.html">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Zones</span>
+            </a>
+            <a href="crime-heatmap.html">
+                <i class="fa-solid fa-fire"></i>
+                <span>Heatmap</span>
+            </a>
+            <a href="live-sos-map.html" class="active">
+                <i class="fa-solid fa-satellite-dish"></i>
+                <span>Live SOS</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="header-title">
+            <h1><i class="fa-solid fa-satellite-dish"></i> Live SOS Monitoring Map</h1>
+            <p>Real-time emergency telemetry dispatches and active panic feeds.</p>
+        </div>
+
+        <div class="sos-grid">
+            <div class="card">
+                <h3 style="margin-bottom: 15px; font-size: 16px; color: #0f172a;">Active Emergency Radar</h3>
+                <div class="live-radar-box" id="sosRadarBox">
+                    <div style="text-align: center;">
+                        <i class="fa-solid fa-tower-broadcast fa-spin" style="font-size: 32px; color: #e11d48; margin-bottom: 10px;"></i>
+                        <p>Scanning emergency dispatch nodes...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: 15px; font-size: 16px; color: #0f172a;">Dispatched Feeds</h3>
+                <div id="sosFeedsContainer">
+                    <p style="font-size: 13px; color: #64748b;">Synchronizing dispatch logs...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script>
+        // HTTP Method: GET, URL: /api/safety/live-sos-map
+        window.addEventListener('DOMContentLoaded', async () => {
+            const feedContainer = document.getElementById('sosFeedsContainer');
+            const radarBox = document.getElementById('sosRadarBox');
+
+            try {
+                const sosData = await getLiveSosMap();
+
+                if (!sosData || sosData.length === 0) {
+                    feedContainer.innerHTML = `<p style="font-size: 13px; color: #64748b;">No active emergency signals.</p>`;
+                    radarBox.innerHTML = `
+                        <div style="text-align: center;">
+                            <i class="fa-solid fa-shield-check" style="font-size: 40px; color: #10b981; margin-bottom: 10px;"></i>
+                            <p style="color: white; font-weight: 600;">System Secure - Zero Active Emergencies</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                feedContainer.innerHTML = sosData.map(sos => `
+                    <div class="broadcast-item">
+                        <div>
+                            <strong style="font-size: 13px; display: block; color: #0f172a;">${sos.userEmail || 'User Dispatch'}</strong>
+                            <small style="color: #64748b; font-size: 11px;">Coords: ${sos.latitude}, ${sos.longitude}</small>
+                        </div>
+                        <span class="sos-tag">SOS ACTIVE</span>
+                    </div>
+                `).join('');
+
+                radarBox.innerHTML = `
+                    <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(225,29,72,0.3) 0%, transparent 75%);"></div>
+                    <div style="z-index: 2; text-align: center;">
+                        <i class="fa-solid fa-triangle-exclamation fa-bounce" style="font-size: 45px; color: #e11d48; margin-bottom: 10px;"></i>
+                        <p style="color: white; font-weight: 700; font-size: 1.1rem;">Live SOS Broadcast Active</p>
+                        <small style="color: #94a3b8;">Monitoring ${sosData.length} distress signals</small>
+                    </div>
+                `;
+            } catch (err) {
+                console.error("Live SOS error:", err);
+                feedContainer.innerHTML = `<p style="font-size: 13px; color: #dc2626;">Failed to load SOS streams.</p>`;
+                radarBox.innerHTML = `<p style="color: #dc2626;">Broadcast connection timeout.</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

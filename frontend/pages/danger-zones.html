@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danger Zones Management | NIRBHAYA Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #efe8dc; color: #1e293b; min-height: 100vh; display: flex; }
+        
+        .sidebar { width: 80px; height: 100vh; background: #0d131f; display: flex; flex-direction: column; align-items: center; padding: 20px 0; position: fixed; z-index: 1000; }
+        .sidebar .logo-area { color: #fff; font-weight: 800; font-size: 14px; margin-bottom: 30px; text-align: center; }
+        .sidebar a { color: #94a3b8; text-decoration: none; display: flex; flex-direction: column; align-items: center; font-size: 10px; padding: 12px 0; width: 100%; transition: 0.2s; }
+        .sidebar a i { font-size: 18px; margin-bottom: 4px; }
+        .sidebar a:hover, .sidebar a.active { color: #ffffff; background: rgba(255, 255, 255, 0.08); border-left: 4px solid #e11d48; }
+
+        .main-content { margin-left: 80px; flex: 1; padding: 40px; display: flex; flex-direction: column; align-items: center; }
+        .form-card { background: white; width: 100%; max-width: 600px; padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); border: 1px solid rgba(226, 232, 240, 0.8); }
+        .form-card h2 { font-family: 'Poppins', sans-serif; font-size: 24px; color: #0f172a; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .form-card h2 i { color: #e11d48; }
+        .form-card p { color: #64748b; font-size: 13px; margin-bottom: 25px; }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 8px; }
+        .input-group input, .input-group textarea { width: 100%; padding: 12px 15px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px; outline: none; transition: 0.2s; background: #fff; }
+        .input-group input:focus, .input-group textarea:focus { border-color: #e11d48; box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1); }
+        
+        .submit-btn { width: 100%; background: #e11d48; color: white; border: none; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3); }
+        .submit-btn:hover { background: #be123c; }
+        .status-alert { margin-top: 15px; font-size: 13px; text-align: center; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-area">
+            <i class="fa-solid fa-user-shield" style="font-size: 22px; color: #e11d48;" title="Admin Portal"></i>
+        </div>
+        <nav style="width: 100%; display: flex; flex-direction: column; gap: 4px;">
+            <a href="../admin.html">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Admin</span>
+            </a>
+            <a href="danger-zones.html" class="active">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Zones</span>
+            </a>
+            <a href="crime-heatmap.html">
+                <i class="fa-solid fa-fire"></i>
+                <span>Heatmap</span>
+            </a>
+            <a href="live-sos-map.html">
+                <i class="fa-solid fa-satellite-dish"></i>
+                <span>Live SOS</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="form-card">
+            <h2><i class="fa-solid fa-map-pin"></i> Register New Danger Zone</h2>
+            <p>Define high-risk coordinates to alert users dynamically during route navigation.</p>
+
+            <form id="dangerZoneForm" onsubmit="submitDangerZone(event)">
+                <div class="input-group">
+                    <label>Zone Title / Area Name</label>
+                    <input type="text" id="zoneName" placeholder="e.g., Industrial Sector 4 Dark Alley" required>
+                </div>
+                <div class="input-group">
+                    <label>Latitude</label>
+                    <input type="number" step="any" id="zoneLat" placeholder="26.4499" required>
+                </div>
+                <div class="input-group">
+                    <label>Longitude</label>
+                    <input type="number" step="any" id="zoneLng" placeholder="80.3319" required>
+                </div>
+                <div class="input-group">
+                    <label>Risk Level / Description</label>
+                    <textarea id="zoneDesc" rows="3" placeholder="Reason for high risk classification..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Publish Danger Zone</button>
+                <div id="formStatus" class="status-alert"></div>
+            </form>
+        </div>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script>
+        // HTTP Method: POST, URL: /api/danger-zone/add
+        async function submitDangerZone(event) {
+            event.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const statusDiv = document.getElementById('formStatus');
+
+            const payload = {
+                name: document.getElementById('zoneName').value.trim(),
+                centerLat: parseFloat(document.getElementById('zoneLat').value),
+                centerLng: parseFloat(document.getElementById('zoneLng').value),
+                radiusMeters: 250,
+                riskLevel: document.getElementById('zoneDesc').value.trim() || 'HIGH'
+            };
+
+            btn.disabled = true;
+            btn.textContent = "Saving to Server...";
+            statusDiv.style.color = "#64748b";
+            statusDiv.textContent = "Transmitting telemetry data...";
+
+            try {
+                // apiRequest helper function pointing to http://localhost:8083/api
+                const response = await addDangerZone(payload);
+                statusDiv.style.color = "#16a34a";
+                statusDiv.textContent = "✅ Danger Zone successfully registered in database!";
+                document.getElementById('dangerZoneForm').reset();
+            } catch (error) {
+                console.error("API Error:", error);
+                statusDiv.style.color = "#dc2626";
+                statusDiv.textContent = "❌ Failed to register zone. Make sure backend is running.";
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Publish Danger Zone";
+            }
+        }
+    </script>
+</body>
+</html>
