@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime & Risk Heatmap | NIRBHAYA Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #efe8dc; color: #1e293b; min-height: 100vh; display: flex; }
+
+        .sidebar { width: 80px; height: 100vh; background: #0d131f; display: flex; flex-direction: column; align-items: center; padding: 20px 0; position: fixed; z-index: 1000; }
+        .sidebar .logo-area { color: #fff; font-weight: 800; font-size: 14px; margin-bottom: 30px; text-align: center; }
+        .sidebar a { color: #94a3b8; text-decoration: none; display: flex; flex-direction: column; align-items: center; font-size: 10px; padding: 12px 0; width: 100%; transition: 0.2s; }
+        .sidebar a i { font-size: 18px; margin-bottom: 4px; }
+        .sidebar a:hover, .sidebar a.active { color: #ffffff; background: rgba(255, 255, 255, 0.08); border-left: 4px solid #e11d48; }
+
+        .main-content { margin-left: 80px; flex: 1; padding: 40px; }
+        .header-title { margin-bottom: 25px; }
+        .header-title h1 { font-family: 'Poppins', sans-serif; font-size: 28px; color: #0f172a; display: flex; align-items: center; gap: 12px; }
+        .header-title h1 i { color: #e11d48; }
+        .header-title p { color: #64748b; font-size: 14px; margin-top: 5px; }
+
+        .heatmap-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
+        @media(max-width: 900px) { .heatmap-grid { grid-template-columns: 1fr; } }
+
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06); border: 1px solid rgba(226, 232, 240, 0.8); }
+        .map-simulator { width: 100%; height: 450px; background: #0d131f; border-radius: 14px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; color: #94a3b8; }
+        
+        .zone-list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+        .zone-list-item:last-child { border-bottom: none; }
+        .risk-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; background: #fee2e2; color: #dc2626; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-area">
+            <i class="fa-solid fa-user-shield" style="font-size: 22px; color: #e11d48;" title="Admin Portal"></i>
+        </div>
+        <nav style="width: 100%; display: flex; flex-direction: column; gap: 4px;">
+            <a href="../admin.html">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Admin</span>
+            </a>
+            <a href="danger-zones.html">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Zones</span>
+            </a>
+            <a href="crime-heatmap.html" class="active">
+                <i class="fa-solid fa-fire"></i>
+                <span>Heatmap</span>
+            </a>
+            <a href="live-sos-map.html">
+                <i class="fa-solid fa-satellite-dish"></i>
+                <span>Live SOS</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="header-title">
+            <h1><i class="fa-solid fa-fire"></i> City Crime & Risk Heatmap</h1>
+            <p>Real-time spatial incident clustering and telemetry risk tracking across sectors.</p>
+        </div>
+
+        <div class="heatmap-grid">
+            <div class="card">
+                <h3 style="margin-bottom: 15px; font-size: 16px; color: #0f172a;">Live Density Grid</h3>
+                <div class="map-simulator" id="mapSimulatorBox">
+                    <div style="text-align: center;">
+                        <i class="fa-solid fa-compass fa-spin" style="font-size: 30px; margin-bottom: 10px; color: #e11d48;"></i>
+                        <p>Loading telemetry risk matrix...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: 15px; font-size: 16px; color: #0f172a;">Active Hotspots Report</h3>
+                <div id="hotspotsContainer">
+                    <p style="font-size: 13px; color: #64748b;">Fetching density metrics...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script>
+        // HTTP Method: GET, URL: /api/safety/crime-heatmap
+        window.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('hotspotsContainer');
+            const mapBox = document.getElementById('mapSimulatorBox');
+
+            try {
+                const heatmapData = await getCrimeHeatmap();
+                
+                if (!heatmapData || heatmapData.length === 0) {
+                    container.innerHTML = `<p style="font-size: 13px; color: #64748b;">No high-risk hotspots recorded.</p>`;
+                    mapBox.innerHTML = `<p style="color: #10b981;"><i class="fa-solid fa-check-circle"></i> All grid sectors are currently clear and safe.</p>`;
+                    return;
+                }
+
+                container.innerHTML = heatmapData.map(zone => `
+                    <div class="zone-list-item">
+                        <div>
+                            <strong style="font-size: 13px; display: block; color: #0f172a;">${zone.name || 'Sector Zone'}</strong>
+                            <small style="color: #64748b; font-size: 11px;">Lat: ${zone.latitude}, Lng: ${zone.longitude}</small>
+                        </div>
+                        <span class="risk-badge">High Risk</span>
+                    </div>
+                `).join('');
+
+                mapBox.innerHTML = `
+                    <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(225,29,72,0.25) 0%, transparent 70%);"></div>
+                    <div style="z-index: 2; text-align: center;">
+                        <i class="fa-solid fa-radar fa-pulse" style="font-size: 40px; color: #e11d48; margin-bottom: 8px;"></i>
+                        <p style="color: white; font-weight: 600;">Active Heatmap Radar Synchronized</p>
+                        <small style="color: #94a3b8;">${heatmapData.length} threat clusters mapped</small>
+                    </div>
+                `;
+            } catch (err) {
+                console.error("Heatmap load error:", err);
+                container.innerHTML = `<p style="font-size: 13px; color: #dc2626;">Failed to load heatmap telemetry.</p>`;
+                mapBox.innerHTML = `<p style="color: #dc2626;">Telemetry connection offline.</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

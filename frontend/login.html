@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/global.css">
+
+    <title>NIRBHAYA - Login</title>
+
+    <style>
+        /* Login Container */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Background */
+        .auth-page {
+            background-image: url("bgg.jpeg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Login Card */
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        /* Login Button */
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+
+            margin-top: 20px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #e63946;
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #c92f3d;
+        }
+
+        /* Signup text */
+        .login-text {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-text a {
+            color: #e63946;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* CAPTCHA Modal Styling */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            color: #1e293b;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .modal-content p {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .captcha-display {
+            background: #f1f5f9;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #e63946;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 20px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            text-align: center;
+            outline: none;
+        }
+
+        .modal-input:focus {
+            border-color: #e63946;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-cancel {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .btn-verify {
+            background: #16a34a;
+            color: white;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <main class="auth-page">
+
+        <section class="login-container">
+
+            <!-- NIRBHAYA HEADER -->
+
+            <div class="auth-header">
+
+                <div class="shield-logo">
+                    <img src="assets/images/logo.png"  height = 100px alt="Nirbhaya Logo" class="shield">
+                </div>
+
+                <h1>NIRBHAYA</h1>
+
+                <p>
+                    Security on your wrist, peace in your mind
+                </p>
+
+            </div>
+
+
+            <!-- LOGIN CARD -->
+
+            <div class="login-card">
+
+                <h2>Welcome Back!</h2>
+
+                <p class="subtitle">
+                    Login to continue your safest journey
+                </p>
+
+
+                <!-- EMAIL -->
+
+                <div class="input-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            ✉
+                        </span>
+
+                        <input type="email" id="email" placeholder="name@example.com" required>
+
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+                    <label for="accountRole">Account Type</label>
+                    <select id="accountRole" onchange="toggleAdminKeyField()" style="width: 100%; height: 48px; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px;">
+                        <option value="USER">User</option>
+                        <option value="ADMIN">Administrator</option>
+                    </select>
+                </div>
+
+                <div class="input-group" id="adminKeyGroup" style="display: none;">
+                    <label for="adminRegistrationKey">Administrator Key</label>
+                    <input type="password" id="adminRegistrationKey" placeholder="Enter predefined admin key" autocomplete="off">
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="input-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🔒
+                        </span>
+
+                        <input type="password" id="password" placeholder="Password" required>
+
+                        <button type="button" class="eye-btn" id="togglePassword">
+
+                            👁
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FORGOT PASSWORD -->
+
+                <div class="login-options">
+
+                    <a href="#" id="forgotPasswordLink" onclick="openCaptchaModal(event)">
+                        Forgot Password?
+                    </a>
+
+                </div>
+
+
+                <!-- LOGIN BUTTON -->
+
+                <button type="button" class="login-btn" id="loginBtn" onclick="handleLogin()">
+
+                    Submit
+
+                </button>
+
+
+                <!-- SIGN UP -->
+
+                <p class="login-text">
+
+                    Don't have an account?
+
+                    <a href="signup.html">
+                        Sign Up
+                    </a>
+
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- CAPTCHA VERIFICATION MODAL FOR FORGOT PASSWORD -->
+    <div class="modal-overlay" id="captchaModal">
+        <div class="modal-content">
+            <h3>🔐 Security Verification</h3>
+            <p>Please solve the CAPTCHA below to securely recover your account and log in.</p>
+
+            <div class="captcha-display" id="captchaCodeText">7492</div>
+
+            <input type="text" id="captchaUserInput" class="modal-input" placeholder="Enter the code above"
+                autocomplete="off">
+
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeCaptchaModal()">Cancel</button>
+                <button class="btn-verify" onclick="verifyAndLogin()">Verify & Login</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Script for backend authentication and local recovery verification -->
+    <script>
+     
+
+        // FIXED URL HERE: Direct mapping to your Render Live Backend API
+        const API_BASE_URL = 'https://nirbhaya-app.onrender.com/api';
+
+        function toggleAdminKeyField() {
+            const isAdmin = document.getElementById('accountRole').value === 'ADMIN';
+            document.getElementById('adminKeyGroup').style.display = isAdmin ? 'block' : 'none';
+            document.getElementById('adminRegistrationKey').required = isAdmin;
+        }
+
+        // Password Visibility Toggle
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function () {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.style.opacity = type === 'text' ? '1' : '0.6';
+            });
+        }
+
+        // Login action with strict validation and backend verification
+        async function handleLogin() {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value.trim();
+            const role = document.getElementById('accountRole').value;
+            const adminRegistrationKey = document.getElementById('adminRegistrationKey').value;
+
+            // Official Validation 1: Empty Fields
+            if (!email || !password) {
+                alert("⚠️ Please enter both email and password.");
+                return;
+            }
+
+            // Official Validation 2: Strict Email Format Check
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("❌ Invalid Email Format! Please enter a valid email address containing '@' (e.g., user@example.com).");
+                emailInput.focus();
+                return;
+            }
+
+            // Authenticate through the Spring Boot API backed by database.
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/${role === 'ADMIN' ? 'admin-login' : 'login'}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, adminRegistrationKey })
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    alert(`❌ ${result.message || 'Authentication failed.'}`);
+                    return;
+                }
+                const displayName = result.username || 'User';
+
+                // Set current active session user parameters
+                localStorage.setItem('nirbhaya_current_user_email', result.email || email);
+                localStorage.setItem('nirbhaya_user_id', result.userId || '');
+                localStorage.setItem('nirbhaya_role', result.role || 'USER');
+                if (result.adminToken) localStorage.setItem('nirbhaya_admin_token', result.adminToken);
+                localStorage.setItem('nirbhaya_username', displayName);
+                if (result.phoneNumber) {
+                    localStorage.setItem('nirbhaya_userphone', result.phoneNumber);
+                }
+
+                // Role-Based Routing Logic (Updated: Normal user goes to security.html)
+                if ((result.role || '').toUpperCase() === 'ADMIN') {
+                    alert(`👑 Welcome Admin, ${displayName}!\n\nLogin Successful. Redirecting to Command Center...`);
+                    window.location.href = "admin.html";
+                } else {
+                    alert(`✅ Welcome back, ${displayName}!\n\nLogin Successful. Redirecting to Security Center...`);
+                    window.location.href = "security.html";
+                }
+
+            } catch (err) {
+                console.error('Unexpected error:', err);
+                alert("❌ An unexpected error occurred during login.");
+            }
+        }
+
+        // Forgot Password CAPTCHA Modal Logic
+        let generatedCaptcha = "";
+
+        async function openCaptchaModal(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!email || !emailRegex.test(email)) {
+                alert("⚠️ Please enter a valid email address first to recover your password.");
+                document.getElementById('email').focus();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/recovery-check?email=${encodeURIComponent(email)}`);
+                if (!response.ok) {
+                    alert("❌ Password recovery is not available yet. Please contact support.");
+                    return;
+                }
+
+                generatedCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
+                document.getElementById('captchaCodeText').textContent = generatedCaptcha;
+                document.getElementById('captchaUserInput').value = "";
+
+                document.getElementById('captchaModal').style.display = 'flex';
+            } catch (err) {
+                console.error('Error checking recovery endpoint:', err);
+                alert("❌ Error verifying email address.");
+            }
+        }
+
+        function closeCaptchaModal() {
+            document.getElementById('captchaModal').style.display = 'none';
+        }
+
+        async function verifyAndLogin() {
+            const userInputValue = document.getElementById('captchaUserInput').value.trim();
+            const email = document.getElementById('email').value.trim().toLowerCase();
+
+            if (!userInputValue) {
+                alert("⚠️ Please enter the verification code.");
+                return;
+            }
+
+            if (userInputValue === generatedCaptcha) {
+                try {
+                    alert("🔓 CAPTCHA verified, but automatic login is disabled until a password-reset endpoint is added.");
+                    closeCaptchaModal();
+                } catch (err) {
+                    console.error('Error during captcha validation login:', err);
+                    alert("❌ Error completing login process.");
+                }
+            } else {
+                alert("❌ Incorrect verification code. Please try again.");
+                generatedCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
+                document.getElementById('captchaCodeText').textContent = generatedCaptcha;
+                document.getElementById('captchaUserInput').value = "";
+            }
+        }
+
+        // --- KEYBOARD NAVIGATION LOGIC ---
+        
+        const emailField = document.getElementById('email');
+        const passField = document.getElementById('password');
+        const modalInputField = document.getElementById('captchaUserInput');
+
+        if (emailField) {
+            emailField.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); 
+                    passField.focus(); 
+                }
+            });
+        }
+
+        if (passField) {
+            passField.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); 
+                    handleLogin(); 
+                }
+            });
+        }
+
+        if (modalInputField) {
+            modalInputField.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    verifyAndLogin();
+                }
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,2235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Security Center | NIRBHAYA</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #D2B48C;
+            color: black;
+        }
+
+        /* =========================
+           SIDEBAR
+        ======================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 105px;
+            height: 100vh;
+
+            background: #0f172a;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            padding: 25px 10px;
+
+            z-index: 1000;
+        }
+
+        .brand {
+            color: white;
+            font-size: 23px;
+            font-weight: 700;
+
+            margin-bottom: 35px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .brand a {
+            color: #ef476f;
+            text-decoration: none;
+        }
+
+        .menu {
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            gap: 20px;
+        }
+
+        .menu a {
+            width: 90px;
+
+            text-decoration: none;
+            color: #cbd5e1;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 9px 5px;
+
+            border-radius: 12px;
+
+            transition: 0.3s;
+        }
+
+        .menu a i {
+            font-size: 21px;
+        }
+
+        .menu a span {
+            font-size: 11px;
+        }
+
+        .menu a:hover {
+            background: #16243a;
+            color: white;
+        }
+
+        .menu a.active {
+            color: #ff3864;
+        }
+
+        /* SOS */
+
+        .sos-wrapper {
+            margin-top: auto;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sos {
+            width: 66px;
+            height: 66px;
+
+            border-radius: 50%;
+
+            background: #ef3340;
+
+            border: 7px solid #651b29;
+
+            color: white;
+
+            font-size: 18px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow: 0 0 25px rgba(239, 51, 64, 0.45);
+
+            transition: 0.3s;
+        }
+
+        .sos:hover {
+            transform: scale(1.08);
+        }
+
+        .sos-wrapper small {
+            color: white;
+            margin-top: 7px;
+            font-size: 10px;
+        }
+
+
+        /* =========================
+           MAIN
+        ======================= */
+
+        .main {
+            margin-left: 105px;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           TOPBAR
+        ======================= */
+
+        .topbar {
+            height: 80px;
+
+            background: #16243a;
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+            position: relative;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Custom Logo Image Styles */
+        .app-logo {
+            height: 48px;
+            width: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        .logo-area h2 {
+            font-family: Poppins, sans-serif;
+            font-size: 20px;
+        }
+
+        .logo-area h2 span {
+            color: #ff3864;
+        }
+
+        .tagline {
+            font-size: 11px;
+            color: #cbd5e1;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .notification {
+            position: relative;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .notification .badge {
+            position: absolute;
+
+            top: -8px;
+            right: -8px;
+
+            width: 18px;
+            height: 18px;
+
+            background: #ef3340;
+
+            border-radius: 50%;
+
+            font-size: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* User Profile Dropdown Styles */
+        .user-dropdown-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 55px;
+            background: #ffffff;
+            color: #1e293b;
+            min-width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            z-index: 1100;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-header {
+            padding: 15px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .dropdown-header strong {
+            display: block;
+            font-size: 14px;
+            color: #0f172a;
+        }
+
+        .dropdown-header small {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: #f1f5f9;
+            color: #e11d48;
+        }
+
+        .dropdown-item i {
+            width: 16px;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+
+        /* =========================
+           CONTENT
+        ======================= */
+
+        .content {
+            padding: 35px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            font-family: Poppins, sans-serif;
+            font-size: 36px;
+        }
+
+        .page-title p {
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+
+        /* =========================
+           SECURITY HEADER
+        ======================= */
+
+        .security-header {
+            display: grid;
+
+            grid-template-columns: 1fr 1.5fr;
+
+            gap: 25px;
+
+            margin-bottom: 25px;
+        }
+
+        .watch-preview {
+            min-height: 240px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.07);
+
+            position: relative;
+
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .watch-preview:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+        }
+
+        .watch-preview::before {
+            content: "";
+
+            position: absolute;
+
+            width: 190px;
+            height: 190px;
+
+            border-radius: 50%;
+
+            border: 2px solid #bbf7d0;
+
+            box-shadow:
+                0 0 0 20px #f0fdf4,
+                0 0 0 40px #f7fee7;
+        }
+
+        .watch {
+            position: relative;
+
+            width: 95px;
+            height: 115px;
+
+            background: #111827;
+
+            border-radius: 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #10b981;
+
+            font-size: 35px;
+
+            z-index: 2;
+
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .watch::before,
+        .watch::after {
+            content: "";
+
+            position: absolute;
+
+            width: 58px;
+            height: 45px;
+
+            background: #0f172a;
+
+            left: 18px;
+
+            z-index: -1;
+        }
+
+        .watch::before {
+            top: -40px;
+            border-radius: 15px 15px 5px 5px;
+        }
+
+        .watch::after {
+            bottom: -40px;
+            border-radius: 5px 5px 15px 15px;
+        }
+
+
+        /* =========================
+           SECURE STATUS
+        ======================= */
+
+        .secure-card {
+            background: linear-gradient(135deg,
+                    #52a00d,
+                    #10b981);
+
+            color: white;
+
+            border-radius: 18px;
+
+            padding: 30px;
+
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+        }
+
+        .secure-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .secure-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .secure-title i {
+            font-size: 35px;
+        }
+
+        .secure-title h2 {
+            font-family: Poppins, sans-serif;
+        }
+
+        .secure-title p {
+            font-size: 13px;
+            margin-top: 4px;
+            opacity: 0.9;
+        }
+
+        .check-circle {
+            width: 50px;
+            height: 50px;
+
+            border: 2px solid white;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 23px;
+        }
+
+        .secure-info {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            margin-top: 35px;
+
+            border-top: 1px solid rgba(255, 255, 255, 0.25);
+
+            padding-top: 20px;
+        }
+
+        .info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding-left: 15px;
+        }
+
+        .info i {
+            font-size: 20px;
+        }
+
+        .info small {
+            display: block;
+            opacity: 0.8;
+        }
+
+        .info strong {
+            display: block;
+            margin-top: 3px;
+        }
+
+
+        /* =========================
+           CARDS
+        ======================= */
+
+        .cards {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+
+            border-radius: 17px;
+
+            padding: 20px;
+
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(15, 23, 42, 0.1);
+        }
+
+        .card-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding-bottom: 15px;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            margin-bottom: 10px;
+        }
+
+        .card-heading .icon {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-heading h3 {
+            font-size: 15px;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 10px 0;
+
+            font-size: 13px;
+        }
+
+        .row-left {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .row-left i {
+            color: #64748b;
+            width: 18px;
+        }
+
+        .green {
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        .blue {
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .red {
+            color: #ef3340;
+            font-weight: 600;
+        }
+
+        .orange {
+            color: #f97316;
+            font-weight: 600;
+        }
+
+        .purple {
+            color: #7c3aed;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           BUTTON
+        ======================= */
+
+        .card-btn {
+            width: 100%;
+
+            margin-top: 15px;
+
+            padding: 10px;
+
+            border: 1px solid #2563eb;
+
+            border-radius: 8px;
+
+            background: white;
+
+            color: #2563eb;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .card-btn:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .green-btn {
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        .green-btn:hover {
+            background: #10b981;
+            color: white;
+        }
+
+        .red-btn {
+            border-color: #ef3340;
+            color: #ef3340;
+        }
+
+        .red-btn:hover {
+            background: #ef3340;
+            color: white;
+        }
+
+
+        /* =========================
+           TOGGLE
+        ======================= */
+
+        .toggle {
+            width: 38px;
+            height: 20px;
+
+            border-radius: 20px;
+
+            background: #10b981;
+
+            position: relative;
+
+            cursor: pointer;
+        }
+
+        .toggle::after {
+            content: "";
+
+            width: 16px;
+            height: 16px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            position: absolute;
+
+            right: 2px;
+            top: 2px;
+        }
+
+
+        /* =========================
+           DANGER STATUS
+        ======================= */
+
+        .safe-box {
+            background: #dcfce7;
+
+            border-radius: 10px;
+
+            padding: 13px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin: 10px 0;
+        }
+
+        .safe-badge {
+            background: #16a34a;
+            color: white;
+
+            padding: 4px 10px;
+
+            border-radius: 15px;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           CONTACTS
+        ======================= */
+
+        .contact {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .contact:last-of-type {
+            border-bottom: none;
+        }
+
+        .contact-avatar {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            background: #e2e8f0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #475569;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-info strong {
+            font-size: 13px;
+        }
+
+        .contact-info small {
+            display: block;
+
+            color: #64748b;
+
+            margin-top: 2px;
+        }
+
+        .verified {
+            background: #dcfce7;
+
+            color: #16a34a;
+
+            border-radius: 15px;
+
+            padding: 4px 8px;
+
+            font-size: 10px;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           SECURITY TIPS
+        ======================= */
+
+        .tips {
+            margin-top: 25px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 25px;
+
+            display: flex;
+
+            gap: 30px;
+
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+        }
+
+        .tip-icon {
+            width: 150px;
+
+            background: #f3e8ff;
+
+            border-radius: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 65px;
+
+            color: #7c3aed;
+        }
+
+        .tips h2 {
+            font-family: Poppins, sans-serif;
+
+            margin-bottom: 15px;
+        }
+
+        .tips ul {
+            list-style: none;
+        }
+
+        .tips li {
+            margin: 10px 0;
+
+            color: #475569;
+
+            font-size: 13px;
+        }
+
+        .tips li i {
+            color: #10b981;
+            margin-right: 8px;
+        }
+
+
+        /* =========================
+           FOOTER
+        ======================= */
+
+        footer {
+            text-align: center;
+
+            padding: 25px;
+
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           MODALS & COUNTDOWN OVERLAYS
+        ======================= */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: white;
+            width: 100%;
+            max-width: 550px;
+            border-radius: 18px;
+            padding: 25px;
+            color: #1e293b;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+
+        .zone-box {
+            background: #fff5f5;
+            border-left: 4px solid #ef3340;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .zone-box.warning {
+            background: #fffaf0;
+            border-left-color: #f97316;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ======================= */
+
+        @media(max-width: 1100px) {
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .security-header {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 750px) {
+
+            .sidebar {
+                width: 70px;
+            }
+
+            .brand {
+                font-size: 16px;
+            }
+
+            .menu a {
+                width: 55px;
+            }
+
+            .menu a span {
+                display: none;
+            }
+
+            .main {
+                margin-left: 70px;
+            }
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .tagline {
+                display: none;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .secure-info {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .tips {
+                flex-direction: column;
+            }
+
+            .tip-icon {
+                width: 100%;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+      SIDEBAR
+========================= -->
+
+    <aside class="sidebar">
+
+        <!-- Shield Icon replacing 'AI' -->
+        <div class="brand">
+            <a href="security.html" title="Security Center">
+                <i class="fa-solid fa-shield-halved" style="color: #ef476f; font-size: 26px;"></i>
+            </a>
+        </div>
+
+        <nav class="menu">
+
+         <a href="dashboard.html">
+          <i class="fa-solid fa-border-all"></i>
+    <span>Dashboard</span>
+        </a>
+
+            <!-- Location link connected to track-location.html -->
+            <a href="pages/track-location.html">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Location</span>
+            </a>
+
+            <a href="alerts.html">
+                <i class="fa-solid fa-bell"></i>
+                <span>Alerts</span>
+            </a>
+
+            <a href="watch.html">
+                <i class="fa-solid fa-clock"></i>
+                <span>Watch</span>
+            </a>
+
+            <a href="security.html" class="active">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Security</span>
+            </a>
+
+            <a href="contacts.html">
+                <i class="fa-solid fa-users"></i>
+                <span>Contacts</span>
+            </a>
+
+            <a href="history.html">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>History</span>
+            </a>
+
+            <a href="settings.html">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sos-wrapper">
+
+            <button class="sos" onclick="triggerSOSCountdown()">
+                SOS
+            </button>
+
+            <small>Emergency</small>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+      MAIN
+========================= -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="logo-area">
+                <!-- Custom Logo Image -->
+                <img src="assets/images/nir2.jpeg" alt="NIRBHAYA Logo" class="app-logo"
+                    onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100'">
+                <div>
+                    <h2>
+                        <span>NIR</span> BHAYA
+                    </h2>
+
+                    <div class="tagline">
+                        Your Safety. Our Priority.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="top-right">
+
+                <div class="notification" onclick="location.href='alerts.html'">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <span class="badge">3</span>
+
+                </div>
+
+
+                <!-- User Profile with Interactive Dropdown Menu -->
+                <div class="user-dropdown-container" id="userDropdownToggle">
+                    <div class="user">
+                        <img id="topbarUserImg" src="aqw.jpeg" alt="Profile"
+                            onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'">
+                        <strong id="topbarUserName">Hi, User</strong>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i>
+                    </div>
+
+                    <div class="dropdown-menu" id="userDropdownMenu">
+                        <div class="dropdown-header">
+                            <strong id="dropdownUserName">User</strong>
+                            <small id="dropdownUserEmail">user@example.com</small>
+                        </div>
+                        <a href="#" class="dropdown-item"
+                            onclick="alert('User Details: Primary User | Status: Verified')">
+                            <i class="fa-solid fa-user"></i> User Details
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <i class="fa-solid fa-gear"></i> Account Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="login.html" class="dropdown-item" style="color: #ef3340;" onclick="handleLogout(event)">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CONTENT -->
+
+        <section class="content">
+
+
+            <div class="page-title">
+
+                <h1>Security Center</h1>
+
+                <p>
+                    Your watch and data are secure
+                </p>
+
+            </div>
+
+
+
+            <!-- SECURITY HEADER -->
+
+            <div class="security-header">
+
+
+                <!-- WATCH Preview linked to watch.html -->
+
+                <div class="watch-preview" onclick="location.href='watch.html'" title="Click to open Smart Watch Hub">
+
+                    <div class="watch">
+
+                        <i class="fa-solid fa-lock" id="headerWatchLockIcon"></i>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SECURE STATUS -->
+
+                <div class="secure-card" id="secureHeaderCard" style="background: linear-gradient(135deg, #475569, #1e293b);">
+
+                    <div class="secure-top">
+
+                        <div class="secure-title">
+
+                            <i class="fa-solid fa-shield-halved" id="secureHeaderShield"></i>
+
+                            <div>
+
+                                <h2 id="secureHeaderTitle">DEVICE DISCONNECTED</h2>
+
+                                <p id="secureHeaderDesc">
+                                    Connect your hardware watch to activate real-time monitoring.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="secure-info">
+
+                        <div class="info">
+                            <!-- Working Refresh Icon -->
+                            <i class="fa-solid fa-rotate" onclick="refreshWatchStatus()" title="Click to refresh device sync status" style="cursor: pointer; transition: transform 0.3s;" id="refreshIconBtn"></i>
+
+                            <div>
+
+                                <small>Last Sync</small>
+
+                                <strong id="secureHeaderSync">Never</strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="info">
+
+                            <i class="fa-solid fa-battery-three-quarters"></i>
+
+                            <div>
+
+                                <small>Battery</small>
+
+                                <strong id="secureHeaderBattery">--</strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="info">
+
+                            <i class="fa-solid fa-wifi"></i>
+
+                            <div>
+
+                                <small>Connection</small>
+
+                                <strong id="secureHeaderConn" style="color: #fca5a5;">Offline</strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CARDS -->
+
+            <div class="cards">
+
+
+                <!-- DEVICE SECURITY -->
+
+                <div class="card">
+
+                    <div class="card-heading">
+
+                        <div class="icon">
+                            <i class="fa-solid fa-watch-smart"></i>
+                        </div>
+
+                        <h3>1. Device Security</h3>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+                            <i class="fa-solid fa-watch"></i>
+                            Watch Status
+                        </div>
+
+                        <span class="red" id="watchStatusText">
+                            Disconnected
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+                            <i class="fa-solid fa-fingerprint"></i>
+                            Device ID
+                        </div>
+
+                        <span class="blue" id="watchDeviceIdText">
+                            --
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+                            <i class="fa-solid fa-wifi"></i>
+                            Connection
+                        </div>
+
+                        <span class="red" id="connectionStatusText">
+                            Offline
+                        </span>
+
+                    </div>
+
+
+                    <!-- BLUETOOTH MESH ALERT TOGGLE -->
+                    <div class="row">
+
+                        <div class="row-left" title="Peer-to-peer offline alert relay">
+                            <i class="fa-solid fa-tower-broadcast" style="color: #7c3aed;"></i>
+                            Bluetooth Mesh Alert
+                        </div>
+
+                        <div class="toggle" id="meshToggle" onclick="toggleBluetoothMesh()" style="background: #cbd5e1;"
+                            title="Click to enable offline mesh relay"></div>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+                            <i class="fa-solid fa-battery-half"></i>
+                            Battery Level
+                        </div>
+
+                        <span class="blue" id="watchBatteryText">
+                            --
+                        </span>
+
+                    </div>
+
+
+                    <button class="card-btn" id="watchToggleBtn" onclick="location.href='watch.html'">
+                        Connect Watch Hub
+                    </button>
+
+                </div>
+
+
+
+                <!-- LOCATION SECURITY -->
+
+                <div class="card">
+
+                    <div class="card-heading">
+
+                        <div class="icon" style="cursor: pointer;" onclick="location.href='pages/track-location.html'"
+                            title="Open Location Tracking">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+
+                        <h3 style="cursor: pointer;" onclick="location.href='pages/track-location.html'">2. Location
+                            Security</h3>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+
+                            <i class="fa-solid fa-location-crosshairs"></i>
+
+                            Live Location
+
+                        </div>
+
+                        <div class="toggle" id="locationToggle" onclick="toggleLocationTracking()"></div>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+
+                            <i class="fa-solid fa-users"></i>
+
+                            Authorized Users
+
+                        </div>
+
+                        <span class="blue">
+                            2 People
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+
+                            <i class="fa-solid fa-satellite-dish"></i>
+
+                            Live Tracking
+
+                        </div>
+
+                        <span class="green" id="liveTrackingStatus">
+                            Active
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+
+                            <i class="fa-solid fa-user-check"></i>
+
+                            Location Permission
+
+                        </div>
+
+                        <span class="blue">
+                            Authorized
+                        </span>
+
+                    </div>
+
+
+                    <button class="card-btn green-btn" onclick="location.href='pages/track-location.html'">
+
+                        Manage Location
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- EMERGENCY (DYNAMIC PIN UI: SET/RESET PIN & TRIGGER) -->
+
+                <div class="card">
+
+                    <div class="card-heading">
+
+                        <div class="icon">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+
+                        <h3>3. Emergency Protection</h3>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+
+                            <i class="fa-solid fa-shield-heart"></i>
+
+                            SOS Protection
+
+                        </div>
+
+                        <span class="green" id="sosStatus" style="cursor: pointer;"
+                            onclick="toggleSetting('sosStatus')">
+                            ON
+                        </span>
+
+                    </div>
+
+
+                    <!-- STEALTH PANIC CODE TRIGGER WITH DYNAMIC [Set PIN] / [Reset PIN] & Trigger -->
+                    <div class="row">
+
+                        <div class="row-left" title="Silent distress signal via secret PIN">
+                            <i class="fa-solid fa-user-secret" style="color: #7c3aed;"></i>
+                            Stealth Panic PIN
+                        </div>
+
+                        <div id="pinActionContainer">
+                            <!-- Dynamic buttons will be loaded here via JavaScript -->
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            Police / Response
+
+                        </div>
+
+                        <span class="green" id="policeStatus" style="cursor: pointer;"
+                            onclick="toggleSetting('policeStatus')">
+                            ON
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+
+                            <i class="fa-solid fa-person-falling"></i>
+
+                            Fall Detection
+
+                        </div>
+
+                        <span class="green" id="fallStatus" style="cursor: pointer;"
+                            onclick="toggleSetting('fallStatus')">
+                            ON
+                        </span>
+
+                    </div>
+
+
+                    <button class="card-btn red-btn" onclick="location.href='settings.html'">
+
+                        Emergency Settings
+
+                    </button>
+
+                    <button class="card-btn" style="margin-top: 10px; border-color: #0f172a; color: #0f172a;"
+                        onclick="triggerFakeCall()">
+                        <i class="fa-solid fa-phone-flip"></i> Trigger Fake Call
+                    </button>
+
+                </div>
+
+
+
+                <!-- DANGER ZONE PROTECTION -->
+
+                <div class="card">
+
+                    <div class="card-heading">
+
+                        <div class="icon">
+
+                            <i class="fa-solid fa-triangle-exclamation" style="color:#f97316;">
+                            </i>
+
+                        </div>
+
+                        <h3>4. Danger Zone Protection</h3>
+
+                    </div>
+
+
+                    <div class="safe-box">
+
+                        <div>
+
+                            <strong>
+                                Current Zone Status
+                            </strong>
+
+                            <br>
+
+                            <small id="aiZoneText">
+                                AI Threat Monitor Active
+                            </small>
+
+                        </div>
+
+                        <span class="safe-badge" id="zoneBadgeStatus">
+                            SAFE
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+                            AI Risk Score
+
+                        </div>
+
+                        <span class="green" id="riskLevelText">
+                            Low (12%)
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+
+                            <i class="fa-solid fa-shield-dog"></i>
+
+                            Police Digital Dispatch
+
+                        </div>
+
+                        <span class="blue" id="policeDispatchStatus" style="cursor: pointer;"
+                            onclick="simulatePoliceDispatch()">
+                            Ready 🚨
+                        </span>
+
+                    </div>
+
+                    <button class="card-btn" style="border-color:#f97316; color:#f97316;"
+                        onclick="openDangerZoneModal()">
+                        📍 View Danger Zone (Map)
+                    </button>
+
+                    <button class="card-btn" style="border-color:#ef3340; color:#ef3340; margin-top: 8px;"
+                        onclick="trackDestinationAndCheckSafety()">
+                        🧭 Track Destination & Risk Alert
+                    </button>
+
+                </div>
+
+
+
+                <!-- 5. SET SOS SMS -->
+
+                <div class="card">
+
+                    <div class="card-heading">
+
+                        <div class="icon" style="background:#f3e8ff;color:#7c3aed;">
+
+                            <i class="fa-solid fa-message"></i>
+
+                        </div>
+
+                        <h3>5. Set SOS SMS</h3>
+
+                    </div>
+
+
+                    <div class="row"
+                        style="flex-direction: column; align-items: flex-start; gap: 8px; padding-bottom: 5px;">
+                        <span style="font-size: 12px; color: #64748b; font-weight: 600;">Custom Emergency SMS
+                            Message:</span>
+                        <textarea id="sosSmsMessage" rows="3"
+                            style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; outline: none;"
+                            placeholder="Enter emergency text message...">🚨 EMERGENCY! I need immediate help. My current live GPS coordinates are being tracked via NIRBHAYA Watch.</textarea>
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row-left">
+
+                            <i class="fa-solid fa-mobile-screen"></i>
+
+                            SMS Broadcast Status
+
+                        </div>
+
+                        <span class="green">
+                            Ready
+                        </span>
+
+                    </div>
+
+
+                    <button class="card-btn" style="border-color:#7c3aed;color:#7c3aed;" onclick="saveSosSmsMessage()">
+
+                        Save SOS Message
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- 6. TRUSTED CONTACTS -->
+
+                <div class="card">
+
+                    <div class="card-heading">
+
+                        <div class="icon">
+
+                            <i class="fa-solid fa-user-group"></i>
+
+                        </div>
+
+                        <h3>6. Trusted Contacts</h3>
+
+                    </div>
+
+                    <div id="securityContactsList">
+                        <div style="text-align: center; padding: 15px; color: #64748b; font-size: 13px;">
+                            Loading trusted contacts...
+                        </div>
+                    </div>
+
+                    <button class="card-btn" onclick="location.href='contacts.html'">
+
+                        Edit Contacts
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SECURITY TIPS -->
+
+            <div class="tips">
+
+                <div class="tip-icon">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Safety & Security Tips
+                    </h2>
+
+
+                    <ul>
+
+                        <li>
+                            <i class="fa-solid fa-circle-check"></i>
+                            Keep your watch connected and updated.
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-circle-check"></i>
+                            Ensure sufficient battery for uninterrupted protection.
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-circle-check"></i>
+                            Share your location only with trusted people.
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-circle-check"></i>
+                            Never share your account password with anyone.
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-circle-check"></i>
+                            Review your security settings regularly.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <footer>
+
+            🛡️ NIR BHAYA © 2026 |
+            Protection. Prevention. Peace of Mind.
+
+        </footer>
+
+
+    </main>
+
+
+
+    <!-- DANGER ZONE DEMO SUB-PAGE MODAL -->
+    <div class="modal-overlay" id="dangerModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>📍 AI Threat & Regional Danger Zones</h3>
+                <button onclick="closeDangerZoneModal()"
+                    style="background:none; border:none; font-size:18px; cursor:pointer;">✖</button>
+            </div>
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 15px;">AI Telemetry currently monitoring these
+                flagged perimeter zones:</p>
+
+            <div class="zone-box">
+                <strong>🔴 Restricted Zone 1: Industrial Alley (Sector 4)</strong><br>
+                <small>High isolation after dark. Automated police response active.</small>
+            </div>
+            <div class="zone-box warning">
+                <strong>🟠 Caution Zone 2: Railway Overbridge Stretch</strong><br>
+                <small>Low lighting area. Smart watch proximity alert enabled.</small>
+            </div>
+            <div class="zone-box warning">
+                <strong>🟠 Caution Zone 3: Old Market Back-Street</strong><br>
+                <small>Blind spot corridor. Alternate safe route recommended.</small>
+            </div>
+
+            <button class="card-btn green-btn" style="margin-top: 15px;" onclick="closeDangerZoneModal()">Close Map
+                View</button>
+        </div>
+    </div>
+
+
+    <!-- Fake Call Overlay Screen -->
+    <div id="fakeCallScreen"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100vh; background:#0f172a; color:white; z-index:9999; text-align:center; padding-top:150px;">
+        <h2>Incoming Call...</h2>
+        <h1 style="font-size: 3rem; margin: 20px 0; color: #10b981;">Dad 📞</h1>
+        <p style="color: #94a3b8; margin-bottom: 50px;">Mobile - +91 91234 56789</p>
+        <button onclick="endFakeCall()"
+            style="background:#ef3340; color:white; border:none; padding:15px 35px; border-radius:30px; font-size:1.2rem; cursor:pointer; font-weight:700;">Decline
+            / End</button>
+    </div>
+
+
+
+    <!-- Global Multi-Channel SOS Engine -->
+    <script src="js/api.js"></script>
+    <script src="global-sos.js"></script>
+
+    <script>
+
+        // Session Security Guard & Dynamic PIN UI Renderer
+        window.addEventListener('DOMContentLoaded', () => {
+            const activeUser = localStorage.getItem('nirbhaya_current_user_email') || localStorage.getItem('nirbhaya_user_email');
+            
+            if (!activeUser) {
+                alert("⚠️ Unauthorized Access: Please log in first.");
+                window.location.href = "login.html";
+            }
+
+            updatePinUI();
+        });
+
+        function updatePinUI() {
+            const container = document.getElementById('pinActionContainer');
+            if (!container) return;
+
+            const savedPin = localStorage.getItem('nirbhaya_custom_stealth_pin');
+
+            if (!savedPin) {
+                container.innerHTML = `
+                    <span class="blue" style="cursor: pointer; font-size: 11px; text-decoration: underline;" onclick="setPersonalStealthPin()">[Set PIN]</span>
+                `;
+            } else {
+                container.innerHTML = `
+                    <span class="blue" style="cursor: pointer; margin-right: 8px; font-size: 11px; text-decoration: underline;" onclick="setPersonalStealthPin()">[Reset PIN]</span>
+                    <span class="red" style="cursor: pointer; text-decoration: underline; font-weight: 700;" onclick="triggerStealthPanic()">Trigger</span>
+                `;
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            const savedName = localStorage.getItem('nirbhaya_username');
+            const savedDp = localStorage.getItem('nirbhaya_userdp');
+            const savedEmail = localStorage.getItem('nirbhaya_user_email') || localStorage.getItem('nirbhaya_current_user_email');
+            const savedSms = localStorage.getItem('nirbhaya_sos_sms');
+
+            const topbarUserName = document.getElementById('topbarUserName');
+            const dropdownUserName = document.getElementById('dropdownUserName');
+            const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+            const topbarUserImg = document.getElementById('topbarUserImg');
+
+            if (savedName && savedName.trim() !== "") {
+                if (topbarUserName) topbarUserName.textContent = `Hi, ${savedName}`;
+                if (dropdownUserName) dropdownUserName.textContent = savedName;
+            } else {
+                if (topbarUserName) topbarUserName.textContent = "Hi, User";
+                if (dropdownUserName) dropdownUserName.textContent = "User";
+            }
+
+            if (savedEmail && savedEmail.trim() !== "") {
+                if (dropdownUserEmail) dropdownUserEmail.textContent = savedEmail;
+            }
+
+            if (savedDp && savedDp.trim() !== "") {
+                if (topbarUserImg) topbarUserImg.src = savedDp;
+            } else {
+                if (topbarUserImg) topbarUserImg.src = 'aqw.jpeg';
+            }
+
+            if (savedSms) {
+                const sosSmsMessage = document.getElementById('sosSmsMessage');
+                if (sosSmsMessage) sosSmsMessage.value = savedSms;
+            }
+
+            syncWatchHardwareStatus();
+            await loadSecurityContacts(savedEmail);
+        });
+
+        function refreshWatchStatus() {
+            const icon = document.getElementById('refreshIconBtn');
+            if (icon) {
+                icon.style.transform = "rotate(360deg)";
+                setTimeout(() => { icon.style.transform = "rotate(0deg)"; }, 400);
+            }
+            syncWatchHardwareStatus();
+        }
+
+        function syncWatchHardwareStatus() {
+            const isConnected = localStorage.getItem('nirbhaya_watch_connected') === 'true';
+            const watchName = localStorage.getItem('nirbhaya_watch_name') || 'ESP32-BLE-Device';
+            const watchBattery = localStorage.getItem('nirbhaya_watch_battery') || '87%';
+
+            const watchStatusText = document.getElementById('watchStatusText');
+            const watchDeviceIdText = document.getElementById('watchDeviceIdText');
+            const connectionStatusText = document.getElementById('connectionStatusText');
+            const watchBatteryText = document.getElementById('watchBatteryText');
+            const watchToggleBtn = document.getElementById('watchToggleBtn');
+
+            const secureHeaderCard = document.getElementById('secureHeaderCard');
+            const secureHeaderTitle = document.getElementById('secureHeaderTitle');
+            const secureHeaderDesc = document.getElementById('secureHeaderDesc');
+            const secureHeaderShield = document.getElementById('secureHeaderShield');
+            const secureHeaderSync = document.getElementById('secureHeaderSync');
+            const secureHeaderBattery = document.getElementById('secureHeaderBattery');
+            const secureHeaderConn = document.getElementById('secureHeaderConn');
+            const headerWatchLockIcon = document.getElementById('headerWatchLockIcon');
+
+            if (isConnected) {
+                if (watchStatusText) { watchStatusText.textContent = "Connected"; watchStatusText.className = "green"; }
+                if (watchDeviceIdText) { watchDeviceIdText.textContent = watchName; }
+                if (connectionStatusText) { connectionStatusText.textContent = "Secure Link"; connectionStatusText.className = "green"; }
+                if (watchBatteryText) { watchBatteryText.textContent = watchBattery; }
+                if (watchToggleBtn) { watchToggleBtn.textContent = "Manage Watch Hub"; watchToggleBtn.onclick = () => location.href='watch.html'; }
+
+                if (secureHeaderCard) secureHeaderCard.style.background = "linear-gradient(135deg, #52a00d, #10b981)";
+                if (secureHeaderTitle) secureHeaderTitle.textContent = "DEVICE SECURE";
+                if (secureHeaderDesc) secureHeaderDesc.textContent = "Your AI Watch is protected and monitoring is active.";
+                if (secureHeaderShield) secureHeaderShield.className = "fa-solid fa-shield-halved";
+                if (secureHeaderSync) secureHeaderSync.textContent = "Just now";
+                if (secureHeaderBattery) secureHeaderBattery.textContent = watchBattery;
+                if (secureHeaderConn) { secureHeaderConn.textContent = "Secure"; secureHeaderConn.style.color = "#ffffff"; }
+                if (headerWatchLockIcon) headerWatchLockIcon.className = "fa-solid fa-lock";
+
+            } else {
+                if (watchStatusText) { watchStatusText.textContent = "Disconnected"; watchStatusText.className = "red"; }
+                if (watchDeviceIdText) { watchDeviceIdText.textContent = "--"; }
+                if (connectionStatusText) { connectionStatusText.textContent = "Offline"; connectionStatusText.className = "red"; }
+                if (watchBatteryText) { watchBatteryText.textContent = "--"; }
+                if (watchToggleBtn) { watchToggleBtn.textContent = "Connect Hardware Watch"; watchToggleBtn.onclick = () => location.href='watch.html'; }
+
+                if (secureHeaderCard) secureHeaderCard.style.background = "linear-gradient(135deg, #475569, #1e293b)";
+                if (secureHeaderTitle) secureHeaderTitle.textContent = "DEVICE DISCONNECTED";
+                if (secureHeaderDesc) secureHeaderDesc.textContent = "Connect your hardware watch to activate real-time monitoring.";
+                if (secureHeaderShield) secureHeaderShield.className = "fa-solid fa-triangle-exclamation";
+                if (secureHeaderSync) secureHeaderSync.textContent = "Never";
+                if (secureHeaderBattery) secureHeaderBattery.textContent = "--";
+                if (secureHeaderConn) { secureHeaderConn.textContent = "Offline"; secureHeaderConn.style.color = "#fca5a5"; }
+                if (headerWatchLockIcon) headerWatchLockIcon.className = "fa-solid fa-clock";
+            }
+        }
+
+        async function loadSecurityContacts(userEmail) {
+            const container = document.getElementById('securityContactsList');
+            if (!container) return;
+
+            let contacts = [];
+            try { contacts = await apiRequest(`/trusted-contacts/${encodeURIComponent(getStoredUserId())}`); }
+            catch (err) { console.warn("Backend contacts unavailable.", err); }
+
+            if (contacts.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 15px; color: #64748b; font-size: 13px;">
+                        ⚠️ No emergency contacts added yet.<br>
+                        <a href="contacts.html" style="color: #2563eb; font-weight: 600; text-decoration: underline;">+ Add Contact Now</a>
+                    </div>
+                `;
+            } else {
+                let html = "";
+                contacts.forEach(c => {
+                    const name = c.name || "Guardian";
+                    const phone = c.phoneNumber || "";
+                    html += `
+                        <div class="contact">
+                            <div class="contact-avatar">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="contact-info">
+                                <strong>${name}</strong>
+                                <small>${phone || 'Emergency Contact'}</small>
+                            </div>
+                            <span class="verified">Verified</span>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+        }
+
+        function handleLogout(event) {
+            if (event) event.preventDefault();
+            localStorage.clear();
+            window.location.href = "login.html";
+        }
+
+        function saveSosSmsMessage() {
+            const smsText = document.getElementById('sosSmsMessage').value.trim();
+            if (!smsText) {
+                alert("⚠️ Please enter a valid SOS text message.");
+                return;
+            }
+            localStorage.setItem('nirbhaya_sos_sms', smsText);
+            alert("✅ Custom SOS SMS Template saved successfully!");
+        }
+
+        const dropdownToggle = document.getElementById('userDropdownToggle');
+        const dropdownMenu = document.getElementById('userDropdownMenu');
+
+        if (dropdownToggle && dropdownMenu) {
+            dropdownToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+            });
+
+            window.addEventListener('click', () => {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+        }
+
+        let isMeshActive = false;
+        function toggleBluetoothMesh() {
+            isMeshActive = !isMeshActive;
+            const meshToggle = document.getElementById('meshToggle');
+            if (isMeshActive) {
+                meshToggle.style.background = "#7c3aed";
+                alert("📡 Bluetooth Mesh Relay Enabled!");
+            } else {
+                meshToggle.style.background = "#cbd5e1";
+                alert("📴 Bluetooth Mesh Relay Disabled.");
+            }
+        }
+
+        let isLocationActive = true;
+        function toggleLocationTracking() {
+            isLocationActive = !isLocationActive;
+            const toggleDiv = document.getElementById('locationToggle');
+            const trackingStatus = document.getElementById('liveTrackingStatus');
+
+            if (isLocationActive) {
+                toggleDiv.style.background = "#10b981";
+                trackingStatus.textContent = "Active";
+                trackingStatus.className = "green";
+            } else {
+                toggleDiv.style.background = "#cbd5e1";
+                trackingStatus.textContent = "OFF";
+                trackingStatus.className = "red";
+            }
+        }
+
+        function toggleSetting(elementId) {
+            const el = document.getElementById(elementId);
+            if (el.textContent.trim() === "ON") {
+                el.textContent = "OFF";
+                el.className = "red";
+            } else {
+                el.textContent = "ON";
+                el.className = "green";
+            }
+        }
+
+        // Custom Stealth PIN Management with History Logging
+        async function setPersonalStealthPin() {
+            let newPin = prompt("🔑 Set your custom 4-digit Stealth Panic PIN:");
+            if (!newPin || newPin.length !== 4 || isNaN(newPin)) {
+                if (newPin !== null) alert("❌ Please enter a valid 4-digit numeric PIN.");
+                return;
+            }
+
+            const userEmail = localStorage.getItem('nirbhaya_current_user_email') || localStorage.getItem('nirbhaya_user_email');
+            if (!userEmail) {
+                alert("⚠️ Please log in first.");
+                return;
+            }
+
+            localStorage.setItem('nirbhaya_custom_stealth_pin', newPin);
+
+            logSystemHistory("Stealth Panic PIN Configured", "User updated 4-digit security PIN.");
+
+            updatePinUI();
+            alert("✅ Custom Stealth PIN saved successfully!");
+        }
+
+        async function triggerStealthPanic() {
+            let savedPin = localStorage.getItem('nirbhaya_custom_stealth_pin');
+
+            if (!savedPin) {
+                alert("⚠️ No Stealth PIN configured yet! Please click on '[Set PIN]' first.");
+                return;
+            }
+
+            let pin = prompt("🔐 Enter your 4-digit Stealth Panic PIN to trigger silent distress signal:");
+            if (!pin) return;
+
+            if (pin !== savedPin) {
+                alert("❌ Incorrect PIN! Silent alarm not triggered.");
+                return;
+            }
+
+            alert("🕵️ STEALTH MODE ACTIVATED!\n\nSilent distress signal transmitted. Dispatching emergency telemetry...");
+
+            const userId = getStoredUserId();
+            if (userId) {
+                triggerSilentSos(userId).catch(error => console.warn("Silent SOS API failed:", error));
+            }
+
+            if (typeof executeSOSWithEvidence === 'function') {
+                executeSOSWithEvidence();
+            }
+        }
+
+        function simulatePoliceDispatch() {
+            const dispatchStatus = document.getElementById('policeDispatchStatus');
+            dispatchStatus.textContent = "Dispatched 🚨";
+            dispatchStatus.className = "red";
+            alert("🚓 POLICE CONTROL ROOM ALERTED!");
+        }
+
+        function openDangerZoneModal() {
+            document.getElementById('dangerModal').style.display = 'flex';
+        }
+
+        function closeDangerZoneModal() {
+            document.getElementById('dangerModal').style.display = 'none';
+        }
+
+        async function trackDestinationAndCheckSafety() {
+            let destination = prompt("🧭 Enter your destination:", "Central Market");
+            if (!destination) return;
+
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        const [risk, danger] = await Promise.all([
+                            evaluateRisk(latitude, longitude),
+                            checkSafetyZone(latitude, longitude)
+                        ]).catch(error => {
+                            console.warn("Safety checks failed:", error);
+                            return [null, null];
+                        });
+                        alert(`✅ Route to "${destination}" checked.\nRisk: ${JSON.stringify(risk)}\nDanger zone: ${JSON.stringify(danger)}`);
+                    },
+                    (error) => {
+                        alert("❌ Unable to retrieve live GPS location.");
+                    },
+                    { timeout: 10000, enableHighAccuracy: true }
+                );
+            }
+        }
+
+        async function triggerFakeCall() {
+            document.getElementById('fakeCallScreen').style.display = 'block';
+            const userId = getStoredUserId();
+            if (userId) await logFakeCall(userId, 'Nirbhaya Emergency Call').catch(error => console.warn("Fake-call log failed:", error));
+        }
+
+        function endFakeCall() {
+            document.getElementById('fakeCallScreen').style.display = 'none';
+        }
+
+    </script>
+
+
+</body>
+
+</html>

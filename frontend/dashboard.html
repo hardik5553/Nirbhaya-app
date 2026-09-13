@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Dashboard | NIRBHAYA</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <style>
+        /* Exact Theme Match with security.html */
+        body {
+            background-color: #8f6244;
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 80px;
+            background-color: #0d131f;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar .logo-area {
+            color: #fff;
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .sidebar a {
+            color: #94a3b8;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            padding: 12px 0;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .sidebar a i {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.08);
+            border-left: 4px solid #e11d48;
+        }
+
+        .sidebar .sos-icon-btn {
+            margin-top: auto;
+            background: #e11d48;
+            color: white;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 11px;
+            box-shadow: 0 0 10px rgba(225, 29, 72, 0.6);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Main Content Wrapper */
+        .main-wrapper {
+            margin-left: 80px;
+            flex: 1;
+            background-color: #efe8dc;
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .topbar {
+            height: 70px;
+            background: #0d131f;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: relative;
+        }
+
+        .brand-logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Custom Logo Image Styles */
+        .app-logo {
+            height: 44px;
+            width: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        /* NIRBHAYA Logo Style (NIR in Red, BHAYA in White) */
+        .brand-title {
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .brand-title .nir-text {
+            color: #e11d48;
+        }
+
+        .brand-title .bhaya-text {
+            color: #ffffff;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* User Profile Dropdown Styles (Exact Match with security.html) */
+        .user-dropdown-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .user-profile img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background: #ffffff;
+            color: #1e293b;
+            min-width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            z-index: 1100;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-header {
+            padding: 15px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .dropdown-header strong {
+            display: block;
+            font-size: 14px;
+            color: #0f172a;
+        }
+
+        .dropdown-header small {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: #f1f5f9;
+            color: #e11d48;
+        }
+
+        .dropdown-item i {
+            width: 16px;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        /* Content Area & Cards Grid */
+        .content-body {
+            padding: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .col-4 {
+            grid-column: span 4;
+        }
+
+        .col-8 {
+            grid-column: span 8;
+        }
+
+        .col-6 {
+            grid-column: span 6;
+        }
+
+        .card-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-safe {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+
+        .sos-active-banner {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe4e6 100%);
+            border: 2px solid #e11d48;
+            text-align: center;
+        }
+
+        .big-sos-btn {
+            background: #e11d48;
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4);
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        /* SOS Countdown Overlay Styling */
+        #sosCountdownOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(225, 29, 72, 0.95);
+            z-index: 99999;
+            color: white;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #sosTimerDisplay {
+            font-size: 6rem;
+            font-weight: 800;
+            margin: 20px 0;
+            letter-spacing: 2px;
+        }
+
+        /* Dashboard reliability + responsive fixes */
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { min-height: 100%; }
+        body { overflow-x: hidden; }
+        .app-container { width: 100%; }
+        .main-wrapper { min-width: 0; }
+        .content-body { display: block !important; visibility: visible !important; opacity: 1 !important; }
+        .dashboard-grid { display: grid !important; }
+        .dashboard-grid > .card { display: block !important; visibility: visible !important; opacity: 1 !important; min-width: 0; }
+        @media (max-width: 900px) {
+            .sidebar { width: 70px; }
+            .main-wrapper { margin-left: 70px; }
+            .dashboard-grid { grid-template-columns: 1fr 1fr; }
+            .col-4, .col-6, .col-8 { grid-column: span 1; }
+            .sos-active-banner { grid-column: 1 / -1; }
+        }
+        @media (max-width: 600px) {
+            .sidebar { width: 60px; padding-top: 12px; }
+            .sidebar a span { display: none; }
+            .main-wrapper { margin-left: 60px; }
+            .topbar { padding: 0 15px; }
+            .brand-title { font-size: 1rem; }
+            .app-logo { width: 34px; height: 34px; }
+            .content-body { padding: 18px; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .col-4, .col-6, .col-8, .sos-active-banner { grid-column: 1; }
+            .sos-active-banner > div { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <!-- Left top shield icon linked to security.html -->
+            <div class="logo-area">
+                <a href="security.html" style="color: inherit; text-decoration: none;">
+                    <i class="fa-solid fa-shield-halved" style="font-size: 22px; color: #e11d48; cursor: pointer;"
+                        title="Go to Security Center"></i>
+                </a>
+            </div>
+
+            <nav style="width: 100%; display: flex; flex-direction: column; gap: 4px;">
+
+                <a href="dashboard.html" class="active">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <!-- Location link connected to pages/track-location.html -->
+                <a href="pages/track-location.html">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Location</span>
+                </a>
+
+                <a href="alerts.html">
+                    <i class="fa-solid fa-bell"></i>
+                    <span>Alerts</span>
+                </a>
+
+                <a href="watch.html">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>Watch</span>
+                </a>
+
+                <a href="security.html">
+                    <i class="fa-solid fa-shield-alt"></i>
+                    <span>Security</span>
+                </a>
+
+                <a href="contacts.html">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Contacts</span>
+                </a>
+
+                <a href="history.html">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>History</span>
+                </a>
+
+                <a href="settings.html">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+            <a class="sos-icon-btn" onclick="triggerSOSCountdown()">SOS</a>
+
+        </aside>
+
+
+        <!-- MAIN WRAPPER -->
+        <div class="main-wrapper">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+
+                <div class="brand-logo-area">
+                    <!-- Brand logo image set to nir2.jpeg -->
+                    <img src="assets/images/nir2.jpeg" alt="NIRBHAYA Logo" class="app-logo"
+                        onerror="this.src='nir2.jpeg'">
+                    <div class="brand-title">
+                        <span class="nir-text">NIR</span><span class="bhaya-text">BHAYA</span>
+                    </div>
+                </div>
+
+                <div class="top-right">
+
+                    <i class="fa-regular fa-bell" style="cursor: pointer; font-size: 1.1rem;"
+                        onclick="location.href='alerts.html'"></i>
+
+                    <!-- USER PROFILE WITH INTERACTIVE DROPDOWN MENU -->
+                    <div class="user-dropdown-container" id="userDropdownToggle">
+                        <div class="user-profile">
+                            <img id="topbarUserImg" src="aqw.jpeg" alt="User DP"
+                                onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'">
+                            <span id="topbarUserName">Hi, User</span>
+                            <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
+                        </div>
+
+                        <div class="dropdown-menu" id="userDropdownMenu">
+                            <div class="dropdown-header">
+                                <strong id="dropdownUserName">User</strong>
+                                <small id="dropdownUserEmail">user@example.com</small>
+                            </div>
+                            <a href="#" class="dropdown-item"
+                                onclick="alert('User Details: Primary User | Status: Verified')">
+                                <i class="fa-solid fa-user"></i> User Details
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fa-solid fa-gear"></i> Account Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="login.html" class="dropdown-item" style="color: #ef3340;" onclick="handleLogout(event)">
+                                <i class="fa-solid fa-right-from-bracket"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- CONTENT BODY -->
+            <main class="content-body">
+
+                <div class="page-title">
+                    <h1>Security Dashboard</h1>
+                    <p>Real-time IoT device telemetry, threat analytics, and safety status</p>
+                </div>
+
+
+                <div class="dashboard-grid">
+
+                    <!-- IoT Hardware Telemetry Card -->
+                    <div class="card col-4">
+
+                        <div class="card-header-flex">
+
+                            <span class="card-title">
+                                <i class="fa-solid fa-microchip"></i>
+                                IoT Device Status
+                            </span>
+
+                            <span class="status-badge badge-safe">
+                                Secure TLS
+                            </span>
+
+                        </div>
+
+                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 12px;">
+                            Device ID: <strong>AIG-WS-4587</strong>
+                        </p>
+
+                        <div
+                            style="display: flex; justify-content: space-between; margin-top: 15px; background: #f8fafc; padding: 12px; border-radius: 10px;">
+
+                            <div>
+
+                                <small style="color: #64748b; font-size: 0.75rem;">
+                                    HEART RATE
+                                </small>
+
+                                <div class="metric-value" style="color: #e11d48;" id="heartRate">
+                                    78
+                                    <span style="font-size: 0.9rem;">
+                                        BPM
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <div>
+
+                                <small style="color: #64748b; font-size: 0.75rem;">
+                                    BATTERY
+                                </small>
+
+                                <div class="metric-value" style="color: #10b981;">
+                                    87%
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- SIH Demo Telemetry Simulation Toggle -->
+                        <div
+                            style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+                            <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">SIH Demo
+                                Simulation:</span>
+                            <label onclick="toggleSimulation()"
+                                style="cursor: pointer; width: 36px; height: 18px; background: #cbd5e1; border-radius: 20px; position: relative; display: inline-block;">
+                                <span id="slider"
+                                    style="position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background: white; border-radius: 50%; transition: 0.3s;"></span>
+                            </label>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Smart SOS Quick Trigger Card -->
+                    <div class="card col-8 sos-active-banner">
+
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+
+                            <div>
+
+                                <h3 style="color: #e11d48; margin-bottom: 5px;">
+                                    Emergency Response Engine
+                                </h3>
+
+                                <p style="font-size: 0.85rem; color: #64748b;">
+                                    Instant alert broadcast to trusted contacts & local authorities. (Voice Command: Say
+                                    <strong>"HELP"</strong> or <strong>"BACHAO"</strong>)
+                                </p>
+
+                            </div>
+
+                            <button class="big-sos-btn" onclick="triggerSOSCountdown()">
+                                TRIGGER SOS
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- AI Risk & Geofence Status -->
+                    <div class="card col-6">
+
+                        <div class="card-header-flex">
+
+                            <span class="card-title">
+                                <i class="fa-solid fa-brain"></i>
+                                AI Threat & Zone Analysis
+                            </span>
+
+                            <span class="status-badge badge-safe" id="zoneBadgeStatus">
+                                Safe Zone
+                            </span>
+
+                        </div>
+
+                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 10px;">
+                            Current Location Risk Score:
+                            <strong id="riskScoreText">Low Risk (12%)</strong>
+                        </p>
+
+                        <p style="font-size: 0.85rem; color: #64748b;">
+                            Route Safety Check:
+                            <strong style="color: #10b981;" id="routeCheckText">
+                                Safe Path Recommended
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <!-- Trusted Contacts Quick View -->
+                    <div class="card col-6">
+
+                        <div class="card-header-flex">
+
+                            <span class="card-title">
+                                <i class="fa-solid fa-user-shield"></i>
+                                Emergency Network
+                            </span>
+
+                            <!-- Manage link correctly directed to contacts.html -->
+                            <a href="contacts.html"
+                                style="font-size: 0.8rem; color: #e11d48; text-decoration: none; font-weight: 700; cursor: pointer;">
+                                Manage
+                            </a>
+
+                        </div>
+
+                        <!-- Dynamic Official Contacts Container -->
+                        <div id="dashboardContactsContainer" style="display: flex; gap: 15px; margin-top: 10px;">
+                            <!-- Populated dynamically via localStorage or empty fallback -->
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <!-- Global Multi-Channel SOS Engine -->
+    <script src="js/api.js"></script>
+    <script src="global-sos.js"></script>
+
+    <!-- Script Section -->
+    <script>
+
+        // Session Security Guard
+        window.addEventListener('DOMContentLoaded', () => {
+            const activeUser = localStorage.getItem('nirbhaya_current_user_email') || localStorage.getItem('nirbhaya_user_email');
+            
+            if (!activeUser) {
+                alert("⚠️ Unauthorized Access: Please log in first.");
+                window.location.href = "login.html";
+            }
+        });
+
+        // Sync Profile Data & Active Logged-in User Details from localStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedName = localStorage.getItem('nirbhaya_username');
+            const savedDp = localStorage.getItem('nirbhaya_userdp');
+            const savedEmail = localStorage.getItem('nirbhaya_user_email') || localStorage.getItem('nirbhaya_current_user_email');
+
+            const topbarNameEl = document.getElementById('topbarUserName');
+            const dropdownNameEl = document.getElementById('dropdownUserName');
+            const dropdownEmailEl = document.getElementById('dropdownUserEmail');
+            const topbarImg = document.getElementById('topbarUserImg');
+
+            if (savedName && savedName.trim() !== "") {
+                if (topbarNameEl) topbarNameEl.textContent = `Hi, ${savedName}`;
+                if (dropdownNameEl) dropdownNameEl.textContent = savedName;
+            } else {
+                if (topbarNameEl) topbarNameEl.textContent = "Hi, User";
+                if (dropdownNameEl) dropdownNameEl.textContent = "User";
+            }
+
+            if (savedEmail && savedEmail.trim() !== "") {
+                if (dropdownEmailEl) dropdownEmailEl.textContent = savedEmail;
+            }
+
+            if (savedDp && savedDp.trim() !== "") {
+                if (topbarImg) topbarImg.src = savedDp;
+            } else {
+                if (topbarImg) topbarImg.src = 'aqw.jpeg';
+            }
+
+            // Render saved emergency contacts dynamically
+            renderEmergencyNetwork();
+            loadDashboardSafetyData();
+
+            // Request microphone access and initiate speech listener on load
+            requestMicrophoneAndInitVoiceSOS();
+        });
+
+        // Dynamic Emergency Network Loader
+        function renderEmergencyNetwork() {
+            const container = document.getElementById('dashboardContactsContainer');
+            const storedContacts = JSON.parse(localStorage.getItem('nirbhaya_trusted_contacts')) || [];
+
+            if (storedContacts.length === 0) {
+                container.innerHTML = `
+                    <div style="background: #f8fafc; padding: 12px 15px; border-radius: 8px; width: 100%; border: 1px dashed #cbd5e1; display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 0.85rem; color: #64748b;">No emergency contacts added yet.</span>
+                        <a href="contacts.html" style="font-size: 0.8rem; color: #2563eb; font-weight: 600; text-decoration: none;">+ Add Now</a>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = storedContacts.slice(0, 2).map(c => `
+                    <div style="background: #f8fafc; padding: 10px 15px; border-radius: 8px; flex: 1; border: 1px solid #e2e8f0;">
+                        <small style="color: #64748b; font-size: 0.75rem;">${c.name}</small>
+                        <div style="font-weight: 700; font-size: 0.9rem; color: #1e293b;">${c.phone}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        async function loadDashboardSafetyData() {
+            const userId = getStoredUserId();
+            if (!userId || !navigator.geolocation) return;
+            try {
+                const analytics = await getIncidentAnalytics(userId);
+                localStorage.setItem('nirbhaya_incident_analytics', JSON.stringify(analytics));
+                navigator.geolocation.getCurrentPosition(async position => {
+                    const help = await findNearbyHelp(position.coords.latitude, position.coords.longitude);
+                    localStorage.setItem('nirbhaya_nearby_help', JSON.stringify(help));
+                }, () => {}, { timeout: 5000 });
+            } catch (error) {
+                console.warn('Dashboard safety data unavailable:', error);
+            }
+        }
+
+        // Logout handler to cleanly terminate current session
+        function handleLogout(event) {
+            if (event) event.preventDefault();
+            localStorage.removeItem('nirbhaya_current_user_email');
+            localStorage.removeItem('nirbhaya_username');
+            localStorage.removeItem('nirbhaya_user_email');
+            localStorage.removeItem('nirbhaya_userdp');
+            localStorage.removeItem('nirbhaya_userphone');
+            window.location.href = "login.html";
+        }
+
+        /* =========================
+           USER DROPDOWN TOGGLE SCRIPT
+        ========================= */
+        const dropdownToggle = document.getElementById('userDropdownToggle');
+        const dropdownMenu = document.getElementById('userDropdownMenu');
+
+        if (dropdownToggle && dropdownMenu) {
+            dropdownToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+            });
+
+            window.addEventListener('click', () => {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+        }
+
+        // 1. IoT Telemetry Simulation for Judges Demo
+        let isSimulating = false;
+        function toggleSimulation() {
+            isSimulating = !isSimulating;
+            let hrElement = document.getElementById("heartRate");
+            let slider = document.getElementById("slider");
+
+            if (isSimulating) {
+                slider.style.transform = "translateX(18px)";
+                slider.parentElement.style.background = "#e11d48";
+                window.simInterval = setInterval(() => {
+                    let randomHR = Math.floor(Math.random() * (140 - 115 + 1)) + 115;
+                    hrElement.innerHTML = `${randomHR} <span style="font-size: 0.9rem;">BPM</span>`;
+                }, 2000);
+            } else {
+                slider.style.transform = "translateX(0)";
+                slider.parentElement.style.background = "#cbd5e1";
+                clearInterval(window.simInterval);
+                hrElement.innerHTML = `78 <span style="font-size: 0.9rem;">BPM</span>`;
+            }
+        }
+
+        // 3. Microphone Permission Prompt & Continuous Hands-Free Voice Listener
+        function requestMicrophoneAndInitVoiceSOS() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then((stream) => {
+                        console.log("🎤 Microphone access granted by user.");
+                        startContinuousVoiceRecognition();
+                    })
+                    .catch((err) => {
+                        console.warn("⚠️ Microphone permission denied or prompt dismissed:", err);
+                        startContinuousVoiceRecognition();
+                    });
+            } else {
+                startContinuousVoiceRecognition();
+            }
+        }
+
+        function startContinuousVoiceRecognition() {
+            if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+                console.warn("Speech recognition is not supported in this browser.");
+                return;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = false;
+            recognition.lang = 'en-IN';
+
+            recognition.onresult = function (event) {
+                const results = event.results;
+                const transcript = results[results.length - 1][0].transcript.toLowerCase().trim();
+                console.log("🎙️ Voice Heard:", transcript);
+
+                // Check for distress keywords
+                if (transcript.includes("help") || transcript.includes("bachao") || transcript.includes("emergency")) {
+                    if (typeof triggerSOSCountdown === 'function') {
+                        triggerSOSCountdown();
+                    }
+                } 
+                // Check for safety keyword during countdown
+                else if (transcript.includes("safe") || transcript.includes("cancel")) {
+                    if (typeof cancelSOS === 'function') {
+                        cancelSOS();
+                    }
+                }
+            };
+
+            recognition.onerror = function (event) {
+                console.log("Speech recognition error:", event.error);
+            };
+
+            recognition.onend = function () {
+                try {
+                    recognition.start();
+                } catch (e) { }
+            };
+
+            try {
+                recognition.start();
+                console.log("Voice SOS listener successfully initiated for 'help', 'bachao', and 'safe'.");
+            } catch (e) {
+                console.log("Voice listener already active.");
+            }
+        }
+    </script>
+
+</body>
+
+</html>
