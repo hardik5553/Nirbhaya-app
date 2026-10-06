@@ -44,9 +44,11 @@ public class AuthController {
             response.put("message", "Email and password are required");
             return ResponseEntity.badRequest().body(response);
         }
-        
+
+        user.setEmail(user.getEmail().trim().toLowerCase());
+
         // Check if email already exists
-        if (user.getEmail() != null && userRepository.findByEmail(user.getEmail()).isPresent()) {
+        if (userRepository.existsByEmailIgnoreCase(user.getEmail())) {
             response.put("message", "Email is already registered!");
             return ResponseEntity.badRequest().body(response);
         }

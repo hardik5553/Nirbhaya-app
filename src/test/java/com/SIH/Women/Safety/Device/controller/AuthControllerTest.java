@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
@@ -37,7 +38,7 @@ class AuthControllerTest {
         User user = new User();
         user.setEmail("user@example.com");
         user.setPassword("secret123");
-        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.empty());
+        when(userRepository.existsByEmailIgnoreCase(user.getEmail())).thenReturn(false);
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
             User saved = invocation.getArgument(0);
             saved.setId("mongo-user-1");
@@ -49,6 +50,23 @@ class AuthControllerTest {
         assertEquals(200, response.getStatusCode().value());
         assertTrue(passwordEncoder.matches("secret123", user.getPassword()));
         assertTrue(((Map<?, ?>) response.getBody()).containsKey("uniqueNumericId"));
+        verify(userRepository).existsByEmailIgnoreCase(user.getEmail());
+    }
+
+    @Test
+    void registerRejectsEmailWhenDuplicateRowsExist() {
+        authController = new AuthController();
+        injectDependencies();
+
+        User user = new User();
+        user.setEmail("duplicate@example.com");
+        user.setPassword("secret123");
+        when(userRepository.existsByEmailIgnoreCase(user.getEmail())).thenReturn(true);
+
+        ResponseEntity<?> response = authController.registerUser(user);
+
+        assertEquals(400, response.getStatusCode().value());
+        assertEquals("Email is already registered!", ((Map<?, ?>) response.getBody()).get("message"));
     }
 
     @Test

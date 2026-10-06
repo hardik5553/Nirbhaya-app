@@ -10,6 +10,8 @@ import com.SIH.Women.Safety.Device.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
     
+    boolean existsByEmailIgnoreCase(String email);
+
     // Email ke basis par user dhoondhne ke liye
     Optional<User> findByEmail(String email);
     
