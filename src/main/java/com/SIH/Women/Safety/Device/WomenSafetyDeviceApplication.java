@@ -9,5 +9,4 @@ public class WomenSafetyDeviceApplication {
     public static void main(String[] args) {
         SpringApplication.run(WomenSafetyDeviceApplication.class, args);
     }
-
 }   

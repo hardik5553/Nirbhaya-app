@@ -2,13 +2,18 @@ package com.SIH.Women.Safety.Device.model;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-@Document(collection = "user_locations")
+@Entity
+@Table(name = "user_locations")
 public class UserLocation {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String userId;
     private double latitude;

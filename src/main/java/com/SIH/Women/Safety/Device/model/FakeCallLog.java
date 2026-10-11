@@ -2,13 +2,18 @@ package com.SIH.Women.Safety.Device.model;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-@Document(collection = "fake_call_logs")
+@Entity
+@Table(name = "fake_call_logs")
 public class FakeCallLog {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String userId;
     private String callerName; // Jaise "Police", "Mom", "Office", etc.

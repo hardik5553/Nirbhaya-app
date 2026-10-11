@@ -1,14 +1,19 @@
 package com.SIH.Women.Safety.Device.model;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 @Data
-@Document(collection = "sensorData")
+@Entity
+@Table(name = "sensor_data")
 public class SensorData {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String userId;
     private String type;        

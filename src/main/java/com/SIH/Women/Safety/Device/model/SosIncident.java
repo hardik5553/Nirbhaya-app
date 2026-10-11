@@ -2,13 +2,18 @@ package com.SIH.Women.Safety.Device.model;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-@Document(collection = "sos_incidents")
+@Entity
+@Table(name = "sos_incidents")
 public class SosIncident {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String userId;
     private String status; // ACTIVE, RESOLVED, CANCELLED
