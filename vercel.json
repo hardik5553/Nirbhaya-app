@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "routes": [
+    { "src": "/login", "dest": "/frontend/login.html" },
+    { "src": "/signup", "dest": "/frontend/signup.html" },
+    { "src": "/history", "dest": "/frontend/history.html" },
+    { "src": "/dashboard", "dest": "/frontend/dashboard.html" },
+    { "src": "/security", "dest": "/frontend/security.html" },
+    { "src": "/contacts", "dest": "/frontend/contacts.html" },
+    { "src": "/alerts", "dest": "/frontend/alerts.html" },
+    { "src": "/watch", "dest": "/frontend/watch.html" },
+    { "src": "/settings", "dest": "/frontend/settings.html" },
+    { "src": "/admin", "dest": "/frontend/admin.html" },
+    { "src": "/", "dest": "/frontend/index.html" },
+    { "src": "/(.*)", "dest": "/frontend/$1" }
+  ]
+}

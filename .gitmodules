@@ -1,0 +1,8 @@
+[submodule "backend"]
+	path = backend
+	url = https://github.com/hardik5553/Nirbhaya-app.git
+	branch = your-next-feature-branch
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/hardik5553/Nirbhaya-project.git
+	branch = hardik5553-patch-1-updatedfrontend
