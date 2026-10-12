@@ -2,6 +2,7 @@
   "version": 2,
   "cleanUrls": true,
   "routes": [
+    { "src": "/api/(.*)", "dest": "https://nirbhaya-backend-preview.onrender.com/api/$1" },
     { "src": "/login", "dest": "/frontend/login.html" },
     { "src": "/signup", "dest": "/frontend/signup.html" },
     { "src": "/history", "dest": "/frontend/history.html" },

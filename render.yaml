@@ -1,17 +1,25 @@
 services:
   - type: web
-    name: nirbhaya-backend
+    name: nirbhaya-backend-preview
     env: docker
     dockerfilePath: backend/Dockerfile
     dockerContext: backend
     plan: free
-    healthCheckPath: /api/auth/recovery-check?email=healthcheck@test.com
+    healthCheckPath: /api/health
     envVars:
       - key: PORT
         value: 8083
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_USERNAME
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
       - key: SUPABASE_URL
         value: https://rezijlatjdjmmwsnkiwa.supabase.co
       - key: SUPABASE_STORAGE_BUCKET
         value: panic-evidence
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
       - key: ADMIN_REGISTRATION_KEY
         sync: false
