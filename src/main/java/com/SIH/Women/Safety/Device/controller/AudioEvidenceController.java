@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,26 +28,24 @@ public class AudioEvidenceController {
         this.evidenceService = evidenceService;
     }
 
-    // POST API: Multipart file upload (Postman / Browser App / Mobile App)
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadAudioEvidence(
-            @RequestParam(value = "userId", defaultValue = "user123") String userId,
+    public ResponseEntity<Map<String, String>> uploadAudioEvidence(
+            @RequestParam("userId") String userId,
             @RequestParam(value = "userEmail", required = false) String userEmail,
             @RequestParam("file") MultipartFile file) {
-        
-        String response = evidenceService.saveAudioEvidence(userId, userEmail, file);
-        return ResponseEntity.ok(response);
+        String audioUrl = evidenceService.saveAudioEvidence(userId, userEmail, file);
+        return ResponseEntity.ok(Map.of("audioUrl", audioUrl));
     }
 
-    // POST API: Binary bytes upload fallback
     @PostMapping("/upload-bytes")
-    public ResponseEntity<String> uploadAudioBytes(
-            @RequestParam(value = "userId", defaultValue = "user123") String userId,
+    public ResponseEntity<Map<String, String>> uploadAudioBytes(
+            @RequestParam("userId") String userId,
             @RequestParam(value = "userEmail", required = false) String userEmail,
+            @RequestParam(value = "fileName", defaultValue = "evidence.bin") String fileName,
+            @RequestHeader(value = "Content-Type", required = false) String contentType,
             @RequestBody byte[] fileBytes) {
-        
-        String response = evidenceService.saveAudioBytes(userId, userEmail, fileBytes);
-        return ResponseEntity.ok(response);
+        String audioUrl = evidenceService.saveAudioBytes(userId, userEmail, fileBytes, contentType, fileName);
+        return ResponseEntity.ok(Map.of("audioUrl", audioUrl));
     }
 
     // GET API: Fetch audio vault recordings by userId

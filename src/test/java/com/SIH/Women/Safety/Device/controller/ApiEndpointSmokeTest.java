@@ -35,7 +35,7 @@ import com.SIH.Women.Safety.Device.WomenSafetyDeviceApplication;
 class ApiEndpointSmokeTest {
 
     private static final String JSON_BODY = "{}";
-    private static final int EXPECTED_REST_ENDPOINT_COUNT = 49;
+    private static final int EXPECTED_REST_ENDPOINT_COUNT = 50;
 
     @Autowired
     private MockMvc mockMvc;
@@ -49,6 +49,7 @@ class ApiEndpointSmokeTest {
      */
     private static Stream<Arguments> apiEndpoints() {
         return Stream.of(
+                endpoint("GET", "/api/health"),
                 endpoint("GET", "/api/admin/users"),
                 endpoint("POST", "/api/evidence/upload"),
                 endpoint("POST", "/api/evidence/upload-bytes"),
